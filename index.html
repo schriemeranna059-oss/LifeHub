@@ -1,230 +1,795 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LifeHub | Your Life, Organized</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LifeHub | Your Life, Organized</title>
 
-  <style>
-    :root {
-      --cream: #f8f5ef;
-      --white: #fffefa;
-      --beige: #eee7dc;
-      --gold: #b39460;
-      --dark: #39352f;
-      --muted: #8c857b;
-    }
+<style>
+:root {
+  --cream: #f8f5ef;
+  --white: #fffefa;
+  --beige: #eee7dc;
+  --gold: #b39460;
+  --dark: #39352f;
+  --muted: #8c857b;
+  --green: #77836d;
+  --red: #b87870;
+}
 
-    * {
-      box-sizing: border-box;
-    }
+* { box-sizing: border-box; }
 
-    body {
-      margin: 0;
-      background: var(--cream);
-      color: var(--dark);
-      font-family: Arial, sans-serif;
-    }
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--dark);
+  font-family: Arial, sans-serif;
+}
 
-    header {
-      background: var(--white);
-      padding: 25px 40px;
-      border-bottom: 1px solid var(--beige);
-    }
+header {
+  background: var(--white);
+  padding: 25px 40px;
+  border-bottom: 1px solid var(--beige);
+}
 
-    .logo {
-      font-family: Georgia, serif;
-      font-size: 32px;
-    }
+.logo {
+  font-family: Georgia, serif;
+  font-size: 32px;
+}
 
-    .logo span {
-      color: var(--gold);
-    }
+.logo span { color: var(--gold); }
 
-    .tagline {
-      color: var(--muted);
-      font-size: 10px;
-      letter-spacing: 3px;
-      margin-top: 5px;
-    }
-  </style>
-</head>
-<body>
+.tagline {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 3px;
+  margin-top: 5px;
+}
 
-  <header>
-    <div class="logo">life<span>hub.</span></div>
-    <div class="tagline">YOUR LIFE. ORGANIZED.</div>
-  </header>   <div class="layout">
+.layout {
+  display: flex;
+  min-height: 85vh;
+}
 
-    <nav>
-      <button onclick="showPage('dashboard')">Overview</button>
-      <button onclick="showPage('tasks')">To-do List</button>
-      <button onclick="showPage('schedule')">Schedule</button>
-      <button onclick="showPage('money')">My Money</button>
-      <button onclick="showPage('shopping')">Shopping</button>
-      <button onclick="showPage('habits')">Habits</button>
-      <button onclick="showPage('notes')">Notes</button>
-    </nav>
+nav {
+  width: 220px;
+  padding: 25px 15px;
+  background: var(--white);
+  border-right: 1px solid var(--beige);
+}
 
-    <main>
-      <section id="dashboard" class="page">
-        <h1>Your life, organized.</h1>
-        <p>Welcome to your personal LifeHub.</p>
-      </section>
+nav button {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 7px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--dark);
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+}
 
-      <section id="tasks" class="page">
-        <h1>To-do List</h1>
-<div class="card">
-  <input id="taskInput" placeholder="What do you need to do?">
-  <button onclick="addTask()">Add task</button>
-  <div id="taskList"></div>
-</div>
-      </section>
+nav button:hover,
+nav button.active {
+  background: var(--beige);
+}
 
-      <section id="schedule" class="page">
-        <h1>Schedule</h1>
-      </section>
+main {
+  flex: 1;
+  padding: 40px;
+  min-width: 0;
+}
 
-      <section id="money" class="page">
-        <h1>My Money</h1>
-      </section>
+h1, h2, h3 {
+  font-family: Georgia, serif;
+  font-weight: normal;
+}
 
-      <section id="shopping" class="page">
-        <h1>Shopping List</h1>
-      </section>
+h1 { font-size: 34px; margin-top: 0; }
+h2 { font-size: 23px; }
+h3 { font-size: 18px; }
 
-      <section id="habits" class="page">
-        <h1>Daily Habits</h1>
-      </section>
+.subtitle {
+  color: var(--muted);
+  margin-top: -12px;
+  margin-bottom: 28px;
+}
 
-      <section id="notes" class="page">
-        <h1>Quick Notes</h1>
-      </section>
-    </main>
+.page { display: none; }
+.page.active { display: block; }
 
-  </div> <style>
-  .layout {
-    display: flex;
-    min-height: 85vh;
-  }
+.card {
+  background: var(--white);
+  border: 1px solid var(--beige);
+  border-radius: 12px;
+  padding: 22px;
+  margin-bottom: 20px;
+}
+
+.card h2:first-child,
+.card h3:first-child { margin-top: 0; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 18px;
+}
+
+.stat {
+  font-family: Georgia, serif;
+  font-size: 30px;
+  color: var(--gold);
+  margin-top: 12px;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--beige);
+  border-radius: 7px;
+  background: var(--white);
+  color: var(--dark);
+  font: inherit;
+  margin: 5px 0 12px;
+}
+
+textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+button.action {
+  background: var(--gold);
+  color: white;
+  border: none;
+  padding: 11px 17px;
+  border-radius: 7px;
+  cursor: pointer;
+  margin: 3px;
+}
+
+button.action:hover { opacity: .85; }
+
+button.delete {
+  background: transparent;
+  border: none;
+  color: var(--red);
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 4px;
+  border-bottom: 1px solid var(--beige);
+  overflow-wrap: anywhere;
+}
+
+.list-item:last-child { border-bottom: none; }
+
+.list-item input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  accent-color: var(--gold);
+}
+
+.list-item .item-text { flex: 1; }
+
+.completed {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+.empty {
+  color: var(--muted);
+  font-size: 14px;
+  padding: 12px 0;
+}
+
+.small-label {
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.money-number {
+  font-family: Georgia, serif;
+  font-size: 26px;
+  color: var(--green);
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 11px;
+  padding: 25px;
+}
+
+@media(max-width: 650px) {
+  header { padding: 20px; }
+
+  .layout { display: block; }
 
   nav {
-    width: 220px;
-    padding: 25px 15px;
-    background: var(--white);
-    border-right: 1px solid var(--beige);
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    padding: 10px;
+    border-right: none;
+    border-bottom: 1px solid var(--beige);
   }
 
   nav button {
-    display: block;
-    width: 100%;
-    padding: 14px;
-    margin-bottom: 7px;
-    border: none;
-    border-radius: 8px;
-    background: transparent;
-    color: var(--dark);
-    text-align: left;
-    cursor: pointer;
+    min-width: 105px;
+    text-align: center;
+    font-size: 12px;
   }
 
-  nav button:hover {
-    background: var(--beige);
-  }
-
-  main {
-    flex: 1;
-    padding: 45px;
-  }
-
-  h1 {
-    font-family: Georgia, serif;
-    font-weight: normal;
-    font-size: 34px;
-  }
-
-  .page {
-    display: none;
-  }
-
-  .page.active {
-    display: block;
-  }
-
-  @media (max-width: 650px) {
-    .layout {
-      display: block;
-    }
-
-    nav {
-      width: 100%;
-      display: flex;
-      overflow-x: auto;
-    }
-
-    nav button {
-      min-width: 110px;
-    }
-
-    main {
-      padding: 25px;
-    }
-  }
+  main { padding: 22px; }
+  h1 { font-size: 29px; }
+}
 </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">life<span>hub.</span></div>
+  <div class="tagline">YOUR LIFE. ORGANIZED.</div>
+</header>
+
+<div class="layout">
+
+<nav>
+  <button class="active" onclick="showPage('dashboard',this)">Overview</button>
+  <button onclick="showPage('tasks',this)">To-do List</button>
+  <button onclick="showPage('schedule',this)">Schedule</button>
+  <button onclick="showPage('money',this)">My Money</button>
+  <button onclick="showPage('shopping',this)">Shopping</button>
+  <button onclick="showPage('habits',this)">Habits</button>
+  <button onclick="showPage('notes',this)">Quick Notes</button>
+</nav>
+
+<main>
+
+<section id="dashboard" class="page active">
+  <h1>Your life, organized.</h1>
+  <p class="subtitle">A little more organized, one day at a time.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="small-label">Tasks to complete</div>
+      <div class="stat" id="dashboardTasks">0</div>
+    </div>
+    <div class="card">
+      <div class="small-label">Upcoming events</div>
+      <div class="stat" id="dashboardEvents">0</div>
+    </div>
+    <div class="card">
+      <div class="small-label">Shopping items</div>
+      <div class="stat" id="dashboardShopping">0</div>
+    </div>
+    <div class="card">
+      <div class="small-label">Habits checked today</div>
+      <div class="stat" id="dashboardHabits">0</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>A fresh start</h2>
+    <p id="todayDate"></p>
+    <p>Make today count. You don't have to do everything at once.</p>
+  </div>
+
+  <div class="card">
+    <h2>Upcoming schedule</h2>
+    <div id="dashboardUpcoming" class="empty">No upcoming events yet.</div>
+  </div>
+</section>
+
+<section id="tasks" class="page">
+  <h1>To-do List</h1>
+  <p class="subtitle">Keep track of everything you need to get done.</p>
+
+  <div class="card">
+    <input id="taskInput" placeholder="What do you need to do?">
+    <button class="action" onclick="addTask()">Add task</button>
+    <div id="taskList"></div>
+  </div>
+</section>
+
+<section id="schedule" class="page">
+  <h1>Schedule</h1>
+  <p class="subtitle">Keep your plans and important dates in one place.</p>
+
+  <div class="card">
+    <h2>Add an event</h2>
+    <input id="eventName" placeholder="Event name">
+    <input id="eventDate" type="date">
+    <input id="eventTime" type="time">
+    <button class="action" onclick="addEvent()">Add event</button>
+  </div>
+
+  <div class="card">
+    <h2>Your events</h2>
+    <div id="eventList"></div>
+  </div>
+</section>
+
+<section id="money" class="page">
+  <h1>My Money</h1>
+  <p class="subtitle">A simple place to organize your budget and expenses.</p>
+
+  <div class="card">
+    <h2>Monthly budget</h2>
+    <label class="small-label" for="budgetInput">Your monthly budget ($)</label>
+    <input id="budgetInput" type="number" min="0" step="0.01" placeholder="Enter your budget">
+    <button class="action" onclick="saveBudget()">Save budget</button>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="small-label">Monthly budget</div>
+      <div class="money-number" id="budgetDisplay">$0.00</div>
+    </div>
+    <div class="card">
+      <div class="small-label">Total expenses</div>
+      <div class="money-number" id="expenseDisplay">$0.00</div>
+    </div>
+    <div class="card">
+      <div class="small-label">Money remaining</div>
+      <div class="money-number" id="remainingDisplay">$0.00</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Add an expense</h2>
+    <input id="expenseName" placeholder="What did you spend on?">
+    <input id="expenseAmount" type="number" min="0" step="0.01" placeholder="Amount in dollars">
+    <button class="action" onclick="addExpense()">Add expense</button>
+  </div>
+
+  <div class="card">
+    <h2>Expense history</h2>
+    <div id="expenseList"></div>
+  </div>
+</section>
+
+<section id="shopping" class="page">
+  <h1>Shopping List</h1>
+  <p class="subtitle">Keep track of everything you need to buy.</p>
+
+  <div class="card">
+    <input id="shoppingInput" placeholder="Add something to your list">
+    <button class="action" onclick="addShopping()">Add item</button>
+    <div id="shoppingList"></div>
+  </div>
+</section>
+
+<section id="habits" class="page">
+  <h1>Daily Habits</h1>
+  <p class="subtitle">Small steps make a big difference.</p>
+
+  <div class="card">
+    <h2>Add a habit</h2>
+    <input id="habitInput" placeholder="Example: Read for 10 minutes">
+    <button class="action" onclick="addHabit()">Add habit</button>
+  </div>
+
+  <div class="card">
+    <h2>Today's habits</h2>
+    <div id="habitList"></div>
+  </div>
+</section>
+
+<section id="notes" class="page">
+  <h1>Quick Notes</h1>
+  <p class="subtitle">A place to put your thoughts, ideas, and reminders.</p>
+
+  <div class="card">
+    <h2>Your notes</h2>
+    <textarea id="notesInput" placeholder="Write anything you want to remember..."></textarea>
+    <button class="action" onclick="saveNotes()">Save notes</button>
+    <span id="notesStatus" class="small-label"></span>
+  </div>
+</section>
+
+</main>
+</div>
+
+<footer>lifehub. · YOUR LIFE. ORGANIZED.</footer>
 
 <script>
-  function showPage(pageName) {
-    document.querySelectorAll(".page").forEach(page => {
-      page.classList.remove("active");
-    });
-
-    document.getElementById(pageName).classList.add("active");
+const getData = (key, fallback) => {
+  try {
+    const saved = localStorage.getItem("lifehub_" + key);
+    return saved === null ? fallback : JSON.parse(saved);
+  } catch {
+    return fallback;
   }
+};
 
-  showPage("dashboard");
-</script> </main>
-</div>
-tasks.forEach(task => {
-  const item = document.createElement("div");
-  item.textContent = task;
+const saveData = (key, value) => {
+  localStorage.setItem("lifehub_" + key, JSON.stringify(value));
+};
 
-  const checkbox = document.createElement("input");
-  checkbox.type = "checkbox";
-  checkbox.style.marginLeft = "10px";
+let tasks = getData("tasks", []);
+let events = getData("events", []);
+let expenses = getData("expenses", []);
+let shopping = getData("shopping", []);
+let habits = getData("habits", []);
+let budget = getData("budget", 0);
 
-  checkbox.addEventListener("change", function() {
-    item.style.textDecoration = checkbox.checked ? "line-through" : "none";
+function showPage(pageName, button) {
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.remove("active");
   });
 
-  item.appendChild(checkbox);
-  document.getElementById("taskList").appendChild(item);
-});
-  <script>
-let tasks = JSON.parse(localStorage.getItem("lifehub_tasks")) || [];
+  document.getElementById(pageName).classList.add("active");
+
+  document.querySelectorAll("nav button").forEach(btn => {
+    btn.classList.remove("active");
+  });
+
+  if (button) button.classList.add("active");
+
+  renderAll();
+}
 
 function addTask() {
   const input = document.getElementById("taskInput");
-  const list = document.getElementById("taskList");
+  const value = input.value.trim();
+  if (!value) return;
 
-  if (input.value.trim() === "") return;
+  tasks.push({ text: value, done: false });
+  saveData("tasks", tasks);
+  input.value = "";
+  renderAll();
+}
 
-  const item = document.createElement("div");
-  item.textContent = input.value;
+function toggleTask(index, checked) {
+  tasks[index].done = checked;
+  saveData("tasks", tasks);
+  renderAll();
+}
+
+function deleteTask(index) {
+  tasks.splice(index, 1);
+  saveData("tasks", tasks);
+  renderAll();
+}
+
+function addEvent() {
+  const name = document.getElementById("eventName").value.trim();
+  const date = document.getElementById("eventDate").value;
+  const time = document.getElementById("eventTime").value;
+
+  if (!name || !date) {
+    alert("Please enter an event name and date.");
+    return;
+  }
+
+  events.push({ name, date, time });
+  saveData("events", events);
+
+  document.getElementById("eventName").value = "";
+  document.getElementById("eventDate").value = "";
+  document.getElementById("eventTime").value = "";
+  renderAll();
+}
+
+function deleteEvent(index) {
+  events.splice(index, 1);
+  saveData("events", events);
+  renderAll();
+}
+
+function saveBudget() {
+  budget = Math.max(0, Number(document.getElementById("budgetInput").value) || 0);
+  saveData("budget", budget);
+  renderAll();
+}
+
+function addExpense() {
+  const name = document.getElementById("expenseName").value.trim();
+  const amount = Number(document.getElementById("expenseAmount").value);
+
+  if (!name || !Number.isFinite(amount) || amount <= 0) {
+    alert("Please enter an expense name and a valid amount.");
+    return;
+  }
+
+  expenses.push({ name, amount });
+  saveData("expenses", expenses);
+
+  document.getElementById("expenseName").value = "";
+  document.getElementById("expenseAmount").value = "";
+  renderAll();
+}
+
+function deleteExpense(index) {
+  expenses.splice(index, 1);
+  saveData("expenses", expenses);
+  renderAll();
+}
+
+function addShopping() {
+  const input = document.getElementById("shoppingInput");
+  const value = input.value.trim();
+  if (!value) return;
+
+  shopping.push({ text: value, done: false });
+  saveData("shopping", shopping);
+  input.value = "";
+  renderAll();
+}
+
+function toggleShopping(index, checked) {
+  shopping[index].done = checked;
+  saveData("shopping", shopping);
+  renderAll();
+}
+
+function deleteShopping(index) {
+  shopping.splice(index, 1);
+  saveData("shopping", shopping);
+  renderAll();
+}
+
+function addHabit() {
+  const input = document.getElementById("habitInput");
+  const value = input.value.trim();
+  if (!value) return;
+
+  habits.push({ text: value, dates: [] });
+  saveData("habits", habits);
+  input.value = "";
+  renderAll();
+}
+
+function toggleHabit(index, checked) {
+  const today = new Date().toLocaleDateString("en-CA");
+
+  if (checked && !habits[index].dates.includes(today)) {
+    habits[index].dates.push(today);
+  } else if (!checked) {
+    habits[index].dates = habits[index].dates.filter(date => date !== today);
+  }
+
+  saveData("habits", habits);
+  renderAll();
+}
+
+function deleteHabit(index) {
+  habits.splice(index, 1);
+  saveData("habits", habits);
+  renderAll();
+}
+
+function saveNotes() {
+  localStorage.setItem(
+    "lifehub_notes",
+    document.getElementById("notesInput").value
+  );
+  document.getElementById("notesStatus").textContent = "Saved!";
+}
+
+function makeItem(text, checked, onChange, onDelete) {
+  const row = document.createElement("div");
+  row.className = "list-item";
 
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
-  checkbox.style.marginLeft = "10px";
+  checkbox.checked = checked;
+  checkbox.addEventListener("change", () => onChange(checkbox.checked));
 
-  checkbox.addEventListener("change", function() {
-    item.style.textDecoration = checkbox.checked ? "line-through" : "none";
+  const label = document.createElement("span");
+  label.className = "item-text" + (checked ? " completed" : "");
+  label.textContent = text;
+
+  const remove = document.createElement("button");
+  remove.className = "delete";
+  remove.textContent = "Remove";
+  remove.addEventListener("click", onDelete);
+
+  row.append(checkbox, label, remove);
+  return row;
+}
+
+function renderTasks() {
+  const list = document.getElementById("taskList");
+  list.replaceChildren();
+
+  if (!tasks.length) {
+    list.textContent = "No tasks yet. Add your first task above!";
+    list.className = "empty";
+    return;
+  }
+
+  list.className = "";
+  tasks.forEach((task, index) => {
+    list.appendChild(makeItem(
+      task.text,
+      task.done,
+      checked => toggleTask(index, checked),
+      () => deleteTask(index)
+    ));
+  });
+}
+
+function renderEvents() {
+  const list = document.getElementById("eventList");
+  const upcoming = document.getElementById("dashboardUpcoming");
+  list.replaceChildren();
+  upcoming.replaceChildren();
+
+  const sorted = [...events].sort((a, b) =>
+    (a.date + a.time).localeCompare(b.date + b.time)
+  );
+
+  if (!sorted.length) {
+    list.textContent = "No events scheduled yet.";
+    list.className = "empty";
+    upcoming.textContent = "No upcoming events yet.";
+    upcoming.className = "empty";
+    return;
+  }
+
+  list.className = "";
+  upcoming.className = "";
+
+  sorted.forEach(event => {
+    const row = document.createElement("div");
+    row.className = "list-item";
+
+    const info = document.createElement("span");
+    info.className = "item-text";
+    info.textContent = event.name + " · " + event.date +
+      (event.time ? " at " + event.time : "");
+
+    const remove = document.createElement("button");
+    remove.className = "delete";
+    remove.textContent = "Remove";
+    remove.addEventListener("click", () => deleteEvent(events.indexOf(event)));
+
+    row.append(info, remove);
+    list.appendChild(row);
+
+    if (event.date >= new Date().toLocaleDateString("en-CA")) {
+      const upcomingRow = document.createElement("div");
+      upcomingRow.className = "list-item";
+      upcomingRow.textContent = event.name + " · " + event.date;
+      upcoming.appendChild(upcomingRow);
+    }
+  });
+}
+
+function renderMoney() {
+  const total = expenses.reduce((sum, item) => sum + item.amount, 0);
+
+  document.getElementById("budgetInput").value = budget || "";
+  document.getElementById("budgetDisplay").textContent = "$" + budget.toFixed(2);
+  document.getElementById("expenseDisplay").textContent = "$" + total.toFixed(2);
+  document.getElementById("remainingDisplay").textContent =
+    "$" + (budget - total).toFixed(2);
+
+  const list = document.getElementById("expenseList");
+  list.replaceChildren();
+
+  if (!expenses.length) {
+    list.textContent = "No expenses added yet.";
+    list.className = "empty";
+    return;
+  }
+
+  list.className = "";
+  expenses.forEach((expense, index) => {
+    const row = document.createElement("div");
+    row.className = "list-item";
+
+    const info = document.createElement("span");
+    info.className = "item-text";
+    info.textContent = expense.name + " — $" + expense.amount.toFixed(2);
+
+    const remove = document.createElement("button");
+    remove.className = "delete";
+    remove.textContent = "Remove";
+    remove.addEventListener("click", () => deleteExpense(index));
+
+    row.append(info, remove);
+    list.appendChild(row);
+  });
+}
+
+function renderShopping() {
+  const list = document.getElementById("shoppingList");
+  list.replaceChildren();
+
+  if (!shopping.length) {
+    list.textContent = "Your shopping list is empty.";
+    list.className = "empty";
+    return;
+  }
+
+  list.className = "";
+  shopping.forEach((item, index) => {
+    list.appendChild(makeItem(
+      item.text,
+      item.done,
+      checked => toggleShopping(index, checked),
+      () => deleteShopping(index)
+    ));
+  });
+}
+
+function renderHabits() {
+  const list = document.getElementById("habitList");
+  list.replaceChildren();
+
+  if (!habits.length) {
+    list.textContent = "Add a habit you'd like to build.";
+    list.className = "empty";
+    return;
+  }
+
+  list.className = "";
+  const today = new Date().toLocaleDateString("en-CA");
+
+  habits.forEach((habit, index) => {
+    list.appendChild(makeItem(
+      habit.text,
+      habit.dates.includes(today),
+      checked => toggleHabit(index, checked),
+      () => deleteHabit(index)
+    ));
+  });
+}
+
+function renderDashboard() {
+  const today = new Date().toLocaleDateString("en-CA");
+
+  document.getElementById("dashboardTasks").textContent =
+    tasks.filter(task => !task.done).length;
+
+  document.getElementById("dashboardEvents").textContent =
+    events.filter(event => event.date >= today).length;
+
+  document.getElementById("dashboardShopping").textContent =
+    shopping.filter(item => !item.done).length;
+
+  document.getElementById("dashboardHabits").textContent =
+    habits.filter(habit => habit.dates.includes(today)).length;
+}
+
+function renderAll() {
+  renderTasks();
+  renderEvents();
+  renderMoney();
+  renderShopping();
+  renderHabits();
+  renderDashboard();
+}
+
+document.getElementById("todayDate").textContent =
+  new Date().toLocaleDateString(undefined, {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric"
   });
 
-  item.appendChild(checkbox);
-tasks.push(input.value.trim());
-localStorage.setItem("lifehub_tasks", JSON.stringify(tasks));
-list.appendChild(item);
-  input.value = "";
-}
+document.getElementById("notesInput").value =
+  localStorage.getItem("lifehub_notes") || "";
+
+renderAll();
 </script>
+
 </body>
 </html>
