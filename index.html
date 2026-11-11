@@ -185,7 +185,7 @@
 </script> </main>
 </div>
 <script>
-let tasks = [];
+let tasks = JSON.parse(localStorage.getItem("lifehub_tasks")) || [];
 
 function addTask() {
   const input = document.getElementById("taskInput");
@@ -205,8 +205,9 @@ function addTask() {
   });
 
   item.appendChild(checkbox);
-  list.appendChild(item);
-
+  tasks.push(input.value.trim());
+localStorage.setItem("lifehub_tasks", JSON.stringify(tasks));  list.appendChild(item);
+localStorage.setItem("lifehub_tasks", JSON.stringify(tasks));
   input.value = "";
 }
 </script>
