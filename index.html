@@ -74,6 +74,11 @@
 
       <section id="tasks" class="page">
         <h1>To-do List</h1>
+<div class="card">
+  <input id="taskInput" placeholder="What do you need to do?">
+  <button onclick="addTask()">Add task</button>
+  <div id="taskList"></div>
+</div>
       </section>
 
       <section id="schedule" class="page">
@@ -179,5 +184,31 @@
   showPage("dashboard");
 </script> </main>
 </div>
+<script>
+let tasks = [];
+
+function addTask() {
+  const input = document.getElementById("taskInput");
+  const list = document.getElementById("taskList");
+
+  if (input.value.trim() === "") return;
+
+  const item = document.createElement("div");
+  item.textContent = input.value;
+
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.style.marginLeft = "10px";
+
+  checkbox.addEventListener("change", function() {
+    item.style.textDecoration = checkbox.checked ? "line-through" : "none";
+  });
+
+  item.appendChild(checkbox);
+  list.appendChild(item);
+
+  input.value = "";
+}
+</script>
 </body>
 </html>
