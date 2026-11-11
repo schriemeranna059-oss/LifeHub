@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LifeHub | Your Life, Organized</title>
+
+  <style>
+    :root {
+      --cream: #f8f5ef;
+      --white: #fffefa;
+      --beige: #eee7dc;
+      --gold: #b39460;
+      --dark: #39352f;
+      --muted: #8c857b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--dark);
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      background: var(--white);
+      padding: 25px 40px;
+      border-bottom: 1px solid var(--beige);
+    }
+
+    .logo {
+      font-family: Georgia, serif;
+      font-size: 32px;
+    }
+
+    .logo span {
+      color: var(--gold);
+    }
+
+    .tagline {
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 3px;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">life<span>hub.</span></div>
+    <div class="tagline">YOUR LIFE. ORGANIZED.</div>
+  </header>   <div class="layout">
+
+    <nav>
+      <button onclick="showPage('dashboard')">Overview</button>
+      <button onclick="showPage('tasks')">To-do List</button>
+      <button onclick="showPage('schedule')">Schedule</button>
+      <button onclick="showPage('money')">My Money</button>
+      <button onclick="showPage('shopping')">Shopping</button>
+      <button onclick="showPage('habits')">Habits</button>
+      <button onclick="showPage('notes')">Notes</button>
+    </nav>
+
+    <main>
+      <section id="dashboard" class="page">
+        <h1>Your life, organized.</h1>
+        <p>Welcome to your personal LifeHub.</p>
+      </section>
+
+      <section id="tasks" class="page">
+        <h1>To-do List</h1>
+      </section>
+
+      <section id="schedule" class="page">
+        <h1>Schedule</h1>
+      </section>
+
+      <section id="money" class="page">
+        <h1>My Money</h1>
+      </section>
+
+      <section id="shopping" class="page">
+        <h1>Shopping List</h1>
+      </section>
+
+      <section id="habits" class="page">
+        <h1>Daily Habits</h1>
+      </section>
+
+      <section id="notes" class="page">
+        <h1>Quick Notes</h1>
+      </section>
+    </main>
+
+  </div> <style>
+  .layout {
+    display: flex;
+    min-height: 85vh;
+  }
+
+  nav {
+    width: 220px;
+    padding: 25px 15px;
+    background: var(--white);
+    border-right: 1px solid var(--beige);
+  }
+
+  nav button {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 7px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--dark);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  nav button:hover {
+    background: var(--beige);
+  }
+
+  main {
+    flex: 1;
+    padding: 45px;
+  }
+
+  h1 {
+    font-family: Georgia, serif;
+    font-weight: normal;
+    font-size: 34px;
+  }
+
+  .page {
+    display: none;
+  }
+
+  .page.active {
+    display: block;
+  }
+
+  @media (max-width: 650px) {
+    .layout {
+      display: block;
+    }
+
+    nav {
+      width: 100%;
+      display: flex;
+      overflow-x: auto;
+    }
+
+    nav button {
+      min-width: 110px;
+    }
+
+    main {
+      padding: 25px;
+    }
+  }
+</style>
+
+<script>
+  function showPage(pageName) {
+    document.querySelectorAll(".page").forEach(page => {
+      page.classList.remove("active");
+    });
+
+    document.getElementById(pageName).classList.add("active");
+  }
+
+  showPage("dashboard");
+</script> </main>
+</div>
+</body>
+</html>
