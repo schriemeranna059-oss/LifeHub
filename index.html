@@ -1,795 +1,271 @@
+<!DOCTYPE html> 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LifeHub | Your Life, Organized</title>
-
-<style>
-:root {
-  --cream: #f8f5ef;
-  --white: #fffefa;
-  --beige: #eee7dc;
-  --gold: #b39460;
-  --dark: #39352f;
-  --muted: #8c857b;
-  --green: #77836d;
-  --red: #b87870;
-}
-
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  background: var(--cream);
-  color: var(--dark);
-  font-family: Arial, sans-serif;
-}
-
-header {
-  background: var(--white);
-  padding: 25px 40px;
-  border-bottom: 1px solid var(--beige);
-}
-
-.logo {
-  font-family: Georgia, serif;
-  font-size: 32px;
-}
-
-.logo span { color: var(--gold); }
-
-.tagline {
-  color: var(--muted);
-  font-size: 10px;
-  letter-spacing: 3px;
-  margin-top: 5px;
-}
-
-.layout {
-  display: flex;
-  min-height: 85vh;
-}
-
-nav {
-  width: 220px;
-  padding: 25px 15px;
-  background: var(--white);
-  border-right: 1px solid var(--beige);
-}
-
-nav button {
-  display: block;
-  width: 100%;
-  padding: 14px;
-  margin-bottom: 7px;
-  border: none;
-  border-radius: 8px;
-  background: transparent;
-  color: var(--dark);
-  text-align: left;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-nav button:hover,
-nav button.active {
-  background: var(--beige);
-}
-
-main {
-  flex: 1;
-  padding: 40px;
-  min-width: 0;
-}
-
-h1, h2, h3 {
-  font-family: Georgia, serif;
-  font-weight: normal;
-}
-
-h1 { font-size: 34px; margin-top: 0; }
-h2 { font-size: 23px; }
-h3 { font-size: 18px; }
-
-.subtitle {
-  color: var(--muted);
-  margin-top: -12px;
-  margin-bottom: 28px;
-}
-
-.page { display: none; }
-.page.active { display: block; }
-
-.card {
-  background: var(--white);
-  border: 1px solid var(--beige);
-  border-radius: 12px;
-  padding: 22px;
-  margin-bottom: 20px;
-}
-
-.card h2:first-child,
-.card h3:first-child { margin-top: 0; }
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 18px;
-}
-
-.stat {
-  font-family: Georgia, serif;
-  font-size: 30px;
-  color: var(--gold);
-  margin-top: 12px;
-}
-
-input, select, textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid var(--beige);
-  border-radius: 7px;
-  background: var(--white);
-  color: var(--dark);
-  font: inherit;
-  margin: 5px 0 12px;
-}
-
-textarea {
-  min-height: 150px;
-  resize: vertical;
-}
-
-button.action {
-  background: var(--gold);
-  color: white;
-  border: none;
-  padding: 11px 17px;
-  border-radius: 7px;
-  cursor: pointer;
-  margin: 3px;
-}
-
-button.action:hover { opacity: .85; }
-
-button.delete {
-  background: transparent;
-  border: none;
-  color: var(--red);
-  cursor: pointer;
-  margin-left: 8px;
-}
-
-.list-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 4px;
-  border-bottom: 1px solid var(--beige);
-  overflow-wrap: anywhere;
-}
-
-.list-item:last-child { border-bottom: none; }
-
-.list-item input[type="checkbox"] {
-  width: auto;
-  margin: 0;
-  accent-color: var(--gold);
-}
-
-.list-item .item-text { flex: 1; }
-
-.completed {
-  text-decoration: line-through;
-  color: var(--muted);
-}
-
-.empty {
-  color: var(--muted);
-  font-size: 14px;
-  padding: 12px 0;
-}
-
-.small-label {
-  color: var(--muted);
-  font-size: 12px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.money-number {
-  font-family: Georgia, serif;
-  font-size: 26px;
-  color: var(--green);
-}
-
-footer {
-  text-align: center;
-  color: var(--muted);
-  font-size: 11px;
-  padding: 25px;
-}
-
-@media(max-width: 650px) {
-  header { padding: 20px; }
-
-  .layout { display: block; }
-
-  nav {
-    width: 100%;
-    display: flex;
-    overflow-x: auto;
-    padding: 10px;
-    border-right: none;
-    border-bottom: 1px solid var(--beige);
-  }
-
-  nav button {
-    min-width: 105px;
-    text-align: center;
-    font-size: 12px;
-  }
-
-  main { padding: 22px; }
-  h1 { font-size: 29px; }
-}
-</style>
-</head>
-
-<body>
-
-<header>
-  <div class="logo">life<span>hub.</span></div>
-  <div class="tagline">YOUR LIFE. ORGANIZED.</div>
-</header>
-
-<div class="layout">
-
-<nav>
-  <button class="active" onclick="showPage('dashboard',this)">Overview</button>
-  <button onclick="showPage('tasks',this)">To-do List</button>
-  <button onclick="showPage('schedule',this)">Schedule</button>
-  <button onclick="showPage('money',this)">My Money</button>
-  <button onclick="showPage('shopping',this)">Shopping</button>
-  <button onclick="showPage('habits',this)">Habits</button>
-  <button onclick="showPage('notes',this)">Quick Notes</button>
-</nav>
-
-<main>
-
-<section id="dashboard" class="page active">
-  <h1>Your life, organized.</h1>
-  <p class="subtitle">A little more organized, one day at a time.</p>
-
-  <div class="grid">
-    <div class="card">
-      <div class="small-label">Tasks to complete</div>
-      <div class="stat" id="dashboardTasks">0</div>
-    </div>
-    <div class="card">
-      <div class="small-label">Upcoming events</div>
-      <div class="stat" id="dashboardEvents">0</div>
-    </div>
-    <div class="card">
-      <div class="small-label">Shopping items</div>
-      <div class="stat" id="dashboardShopping">0</div>
-    </div>
-    <div class="card">
-      <div class="small-label">Habits checked today</div>
-      <div class="stat" id="dashboardHabits">0</div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>A fresh start</h2>
-    <p id="todayDate"></p>
-    <p>Make today count. You don't have to do everything at once.</p>
-  </div>
-
-  <div class="card">
-    <h2>Upcoming schedule</h2>
-    <div id="dashboardUpcoming" class="empty">No upcoming events yet.</div>
-  </div>
-</section>
-
-<section id="tasks" class="page">
-  <h1>To-do List</h1>
-  <p class="subtitle">Keep track of everything you need to get done.</p>
-
-  <div class="card">
-    <input id="taskInput" placeholder="What do you need to do?">
-    <button class="action" onclick="addTask()">Add task</button>
-    <div id="taskList"></div>
-  </div>
-</section>
-
-<section id="schedule" class="page">
-  <h1>Schedule</h1>
-  <p class="subtitle">Keep your plans and important dates in one place.</p>
-
-  <div class="card">
-    <h2>Add an event</h2>
-    <input id="eventName" placeholder="Event name">
-    <input id="eventDate" type="date">
-    <input id="eventTime" type="time">
-    <button class="action" onclick="addEvent()">Add event</button>
-  </div>
-
-  <div class="card">
-    <h2>Your events</h2>
-    <div id="eventList"></div>
-  </div>
-</section>
-
-<section id="money" class="page">
-  <h1>My Money</h1>
-  <p class="subtitle">A simple place to organize your budget and expenses.</p>
-
-  <div class="card">
-    <h2>Monthly budget</h2>
-    <label class="small-label" for="budgetInput">Your monthly budget ($)</label>
-    <input id="budgetInput" type="number" min="0" step="0.01" placeholder="Enter your budget">
-    <button class="action" onclick="saveBudget()">Save budget</button>
-  </div>
-
-  <div class="grid">
-    <div class="card">
-      <div class="small-label">Monthly budget</div>
-      <div class="money-number" id="budgetDisplay">$0.00</div>
-    </div>
-    <div class="card">
-      <div class="small-label">Total expenses</div>
-      <div class="money-number" id="expenseDisplay">$0.00</div>
-    </div>
-    <div class="card">
-      <div class="small-label">Money remaining</div>
-      <div class="money-number" id="remainingDisplay">$0.00</div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Add an expense</h2>
-    <input id="expenseName" placeholder="What did you spend on?">
-    <input id="expenseAmount" type="number" min="0" step="0.01" placeholder="Amount in dollars">
-    <button class="action" onclick="addExpense()">Add expense</button>
-  </div>
-
-  <div class="card">
-    <h2>Expense history</h2>
-    <div id="expenseList"></div>
-  </div>
-</section>
-
-<section id="shopping" class="page">
-  <h1>Shopping List</h1>
-  <p class="subtitle">Keep track of everything you need to buy.</p>
-
-  <div class="card">
-    <input id="shoppingInput" placeholder="Add something to your list">
-    <button class="action" onclick="addShopping()">Add item</button>
-    <div id="shoppingList"></div>
-  </div>
-</section>
-
-<section id="habits" class="page">
-  <h1>Daily Habits</h1>
-  <p class="subtitle">Small steps make a big difference.</p>
-
-  <div class="card">
-    <h2>Add a habit</h2>
-    <input id="habitInput" placeholder="Example: Read for 10 minutes">
-    <button class="action" onclick="addHabit()">Add habit</button>
-  </div>
-
-  <div class="card">
-    <h2>Today's habits</h2>
-    <div id="habitList"></div>
-  </div>
-</section>
-
-<section id="notes" class="page">
-  <h1>Quick Notes</h1>
-  <p class="subtitle">A place to put your thoughts, ideas, and reminders.</p>
-
-  <div class="card">
-    <h2>Your notes</h2>
-    <textarea id="notesInput" placeholder="Write anything you want to remember..."></textarea>
-    <button class="action" onclick="saveNotes()">Save notes</button>
-    <span id="notesStatus" class="small-label"></span>
-  </div>
-</section>
-
-</main>
-</div>
-
-<footer>lifehub. · YOUR LIFE. ORGANIZED.</footer>
-
-<script>
-const getData = (key, fallback) => {
-  try {
-    const saved = localStorage.getItem("lifehub_" + key);
-    return saved === null ? fallback : JSON.parse(saved);
-  } catch {
-    return fallback;
-  }
-};
-
-const saveData = (key, value) => {
-  localStorage.setItem("lifehub_" + key, JSON.stringify(value));
-};
-
-let tasks = getData("tasks", []);
-let events = getData("events", []);
-let expenses = getData("expenses", []);
-let shopping = getData("shopping", []);
-let habits = getData("habits", []);
-let budget = getData("budget", 0);
-
-function showPage(pageName, button) {
-  document.querySelectorAll(".page").forEach(page => {
-    page.classList.remove("active");
-  });
-
-  document.getElementById(pageName).classList.add("active");
-
-  document.querySelectorAll("nav button").forEach(btn => {
-    btn.classList.remove("active");
-  });
-
-  if (button) button.classList.add("active");
-
-  renderAll();
-}
-
-function addTask() {
-  const input = document.getElementById("taskInput");
-  const value = input.value.trim();
-  if (!value) return;
-
-  tasks.push({ text: value, done: false });
-  saveData("tasks", tasks);
-  input.value = "";
-  renderAll();
-}
-
-function toggleTask(index, checked) {
-  tasks[index].done = checked;
-  saveData("tasks", tasks);
-  renderAll();
-}
-
-function deleteTask(index) {
-  tasks.splice(index, 1);
-  saveData("tasks", tasks);
-  renderAll();
-}
-
-function addEvent() {
-  const name = document.getElementById("eventName").value.trim();
-  const date = document.getElementById("eventDate").value;
-  const time = document.getElementById("eventTime").value;
-
-  if (!name || !date) {
-    alert("Please enter an event name and date.");
-    return;
-  }
-
-  events.push({ name, date, time });
-  saveData("events", events);
-
-  document.getElementById("eventName").value = "";
-  document.getElementById("eventDate").value = "";
-  document.getElementById("eventTime").value = "";
-  renderAll();
-}
-
-function deleteEvent(index) {
-  events.splice(index, 1);
-  saveData("events", events);
-  renderAll();
-}
-
-function saveBudget() {
-  budget = Math.max(0, Number(document.getElementById("budgetInput").value) || 0);
-  saveData("budget", budget);
-  renderAll();
-}
-
-function addExpense() {
-  const name = document.getElementById("expenseName").value.trim();
-  const amount = Number(document.getElementById("expenseAmount").value);
-
-  if (!name || !Number.isFinite(amount) || amount <= 0) {
-    alert("Please enter an expense name and a valid amount.");
-    return;
-  }
-
-  expenses.push({ name, amount });
-  saveData("expenses", expenses);
-
-  document.getElementById("expenseName").value = "";
-  document.getElementById("expenseAmount").value = "";
-  renderAll();
-}
-
-function deleteExpense(index) {
-  expenses.splice(index, 1);
-  saveData("expenses", expenses);
-  renderAll();
-}
-
-function addShopping() {
-  const input = document.getElementById("shoppingInput");
-  const value = input.value.trim();
-  if (!value) return;
-
-  shopping.push({ text: value, done: false });
-  saveData("shopping", shopping);
-  input.value = "";
-  renderAll();
-}
-
-function toggleShopping(index, checked) {
-  shopping[index].done = checked;
-  saveData("shopping", shopping);
-  renderAll();
-}
-
-function deleteShopping(index) {
-  shopping.splice(index, 1);
-  saveData("shopping", shopping);
-  renderAll();
-}
-
-function addHabit() {
-  const input = document.getElementById("habitInput");
-  const value = input.value.trim();
-  if (!value) return;
-
-  habits.push({ text: value, dates: [] });
-  saveData("habits", habits);
-  input.value = "";
-  renderAll();
-}
-
-function toggleHabit(index, checked) {
-  const today = new Date().toLocaleDateString("en-CA");
-
-  if (checked && !habits[index].dates.includes(today)) {
-    habits[index].dates.push(today);
-  } else if (!checked) {
-    habits[index].dates = habits[index].dates.filter(date => date !== today);
-  }
-
-  saveData("habits", habits);
-  renderAll();
-}
-
-function deleteHabit(index) {
-  habits.splice(index, 1);
-  saveData("habits", habits);
-  renderAll();
-}
-
-function saveNotes() {
-  localStorage.setItem(
-    "lifehub_notes",
-    document.getElementById("notesInput").value
-  );
-  document.getElementById("notesStatus").textContent = "Saved!";
-}
-
-function makeItem(text, checked, onChange, onDelete) {
-  const row = document.createElement("div");
-  row.className = "list-item";
-
-  const checkbox = document.createElement("input");
-  checkbox.type = "checkbox";
-  checkbox.checked = checked;
-  checkbox.addEventListener("change", () => onChange(checkbox.checked));
-
-  const label = document.createElement("span");
-  label.className = "item-text" + (checked ? " completed" : "");
-  label.textContent = text;
-
-  const remove = document.createElement("button");
-  remove.className = "delete";
-  remove.textContent = "Remove";
-  remove.addEventListener("click", onDelete);
-
-  row.append(checkbox, label, remove);
-  return row;
-}
-
-function renderTasks() {
-  const list = document.getElementById("taskList");
-  list.replaceChildren();
-
-  if (!tasks.length) {
-    list.textContent = "No tasks yet. Add your first task above!";
-    list.className = "empty";
-    return;
-  }
-
-  list.className = "";
-  tasks.forEach((task, index) => {
-    list.appendChild(makeItem(
-      task.text,
-      task.done,
-      checked => toggleTask(index, checked),
-      () => deleteTask(index)
-    ));
-  });
-}
-
-function renderEvents() {
-  const list = document.getElementById("eventList");
-  const upcoming = document.getElementById("dashboardUpcoming");
-  list.replaceChildren();
-  upcoming.replaceChildren();
-
-  const sorted = [...events].sort((a, b) =>
-    (a.date + a.time).localeCompare(b.date + b.time)
-  );
-
-  if (!sorted.length) {
-    list.textContent = "No events scheduled yet.";
-    list.className = "empty";
-    upcoming.textContent = "No upcoming events yet.";
-    upcoming.className = "empty";
-    return;
-  }
-
-  list.className = "";
-  upcoming.className = "";
-
-  sorted.forEach(event => {
-    const row = document.createElement("div");
-    row.className = "list-item";
-
-    const info = document.createElement("span");
-    info.className = "item-text";
-    info.textContent = event.name + " · " + event.date +
-      (event.time ? " at " + event.time : "");
-
-    const remove = document.createElement("button");
-    remove.className = "delete";
-    remove.textContent = "Remove";
-    remove.addEventListener("click", () => deleteEvent(events.indexOf(event)));
-
-    row.append(info, remove);
-    list.appendChild(row);
-
-    if (event.date >= new Date().toLocaleDateString("en-CA")) {
-      const upcomingRow = document.createElement("div");
-      upcomingRow.className = "list-item";
-      upcomingRow.textContent = event.name + " · " + event.date;
-      upcoming.appendChild(upcomingRow);
-    }
-  });
-}
-
-function renderMoney() {
-  const total = expenses.reduce((sum, item) => sum + item.amount, 0);
-
-  document.getElementById("budgetInput").value = budget || "";
-  document.getElementById("budgetDisplay").textContent = "$" + budget.toFixed(2);
-  document.getElementById("expenseDisplay").textContent = "$" + total.toFixed(2);
-  document.getElementById("remainingDisplay").textContent =
-    "$" + (budget - total).toFixed(2);
-
-  const list = document.getElementById("expenseList");
-  list.replaceChildren();
-
-  if (!expenses.length) {
-    list.textContent = "No expenses added yet.";
-    list.className = "empty";
-    return;
-  }
-
-  list.className = "";
-  expenses.forEach((expense, index) => {
-    const row = document.createElement("div");
-    row.className = "list-item";
-
-    const info = document.createElement("span");
-    info.className = "item-text";
-    info.textContent = expense.name + " — $" + expense.amount.toFixed(2);
-
-    const remove = document.createElement("button");
-    remove.className = "delete";
-    remove.textContent = "Remove";
-    remove.addEventListener("click", () => deleteExpense(index));
-
-    row.append(info, remove);
-    list.appendChild(row);
-  });
-}
-
-function renderShopping() {
-  const list = document.getElementById("shoppingList");
-  list.replaceChildren();
-
-  if (!shopping.length) {
-    list.textContent = "Your shopping list is empty.";
-    list.className = "empty";
-    return;
-  }
-
-  list.className = "";
-  shopping.forEach((item, index) => {
-    list.appendChild(makeItem(
-      item.text,
-      item.done,
-      checked => toggleShopping(index, checked),
-      () => deleteShopping(index)
-    ));
-  });
-}
-
-function renderHabits() {
-  const list = document.getElementById("habitList");
-  list.replaceChildren();
-
-  if (!habits.length) {
-    list.textContent = "Add a habit you'd like to build.";
-    list.className = "empty";
-    return;
-  }
-
-  list.className = "";
-  const today = new Date().toLocaleDateString("en-CA");
-
-  habits.forEach((habit, index) => {
-    list.appendChild(makeItem(
-      habit.text,
-      habit.dates.includes(today),
-      checked => toggleHabit(index, checked),
-      () => deleteHabit(index)
-    ));
-  });
-}
-
-function renderDashboard() {
-  const today = new Date().toLocaleDateString("en-CA");
-
-  document.getElementById("dashboardTasks").textContent =
-    tasks.filter(task => !task.done).length;
-
-  document.getElementById("dashboardEvents").textContent =
-    events.filter(event => event.date >= today).length;
-
-  document.getElementById("dashboardShopping").textContent =
-    shopping.filter(item => !item.done).length;
-
-  document.getElementById("dashboardHabits").textContent =
-    habits.filter(habit => habit.dates.includes(today)).length;
-}
-
-function renderAll() {
-  renderTasks();
-  renderEvents();
-  renderMoney();
-  renderShopping();
-  renderHabits();
-  renderDashboard();
-}
-
-document.getElementById("todayDate").textContent =
-  new Date().toLocaleDateString(undefined, {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric"
-  });
-
-document.getElementById("notesInput").value =
-  localStorage.getItem("lifehub_notes") || "";
-
-renderAll();
-</script>
-
-</body>
-</html>
+<html lang="en"> 
+
+<head> 
+
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f6f2eb"><title>LifeHub — Your life. Organized.</title> 
+
+<style> 
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap'); 
+
+:root{--bg:#f6f2eb;--panel:#fffdf9;--panel2:#f0e9de;--ink:#302c27;--muted:#898176;--line:#e8e0d5;--gold:#b59662;--gold2:#e9ddc8;--green:#788675;--red:#b87568;--shadow:0 10px 30px #4537210c;--serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',Arial,sans-serif} 
+
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px}button,input,select,textarea{font:inherit}button{cursor:pointer}.app{min-height:100vh;display:grid;grid-template-columns:248px 1fr}.sidebar{background:var(--panel);border-right:1px solid var(--line);padding:26px 16px;position:sticky;top:0;height:100vh;overflow:auto}.brand{padding:4px 12px 28px}.brand-name{font:600 30px var(--serif);letter-spacing:-1px}.brand-name span{color:var(--gold)}.tagline{font-size:9px;letter-spacing:2.3px;color:var(--muted);margin-top:4px}.nav-label{font-size:9px;font-weight:700;letter-spacing:1.8px;color:#aaa094;padding:14px 12px 8px}.nav{display:grid;gap:4px}.nav button{border:0;background:transparent;color:#766f65;text-align:left;padding:11px 12px;border-radius:10px;display:flex;gap:12px;align-items:center;font-size:13px}.nav button:hover,.nav button.active{background:var(--panel2);color:var(--ink)}.nav button.active{font-weight:700}.nav .ico{width:18px;text-align:center;color:var(--gold)}.side-bottom{margin-top:28px;border-top:1px solid var(--line);padding-top:14px}.main{min-width:0;padding:30px clamp(18px,4vw,54px) 70px;max-width:1600px;width:100%;margin:auto}.topbar{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:30px}.eyebrow{font-size:10px;letter-spacing:1.7px;color:var(--gold);font-weight:700;text-transform:uppercase}.page-title{font:600 clamp(27px,3vw,36px) var(--serif);margin:5px 0}.sub{color:var(--muted);font-size:13px}.top-actions{display:flex;gap:9px;align-items:center}.search{width:min(240px,28vw);background:var(--panel);border:1px solid var(--line);padding:10px 13px;border-radius:10px;outline:none}.btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:10px 14px;border-radius:9px;font-size:12px}.btn.primary{background:var(--ink);border-color:var(--ink);color:#fff}.btn.gold{background:var(--gold);border-color:var(--gold);color:white}.btn:hover{filter:brightness(.97)}.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:19px;box-shadow:var(--shadow);min-width:0}.span-12{grid-column:span 12}.span-8{grid-column:span 8}.span-7{grid-column:span 7}.span-6{grid-column:span 6}.span-5{grid-column:span 5}.span-4{grid-column:span 4}.span-3{grid-column:span 3}.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}.card-title{font:600 17px var(--serif)}.muted{color:var(--muted)}.stat{font:600 30px var(--serif);margin:8px 0 3px}.stat-label{font-size:11px;color:var(--muted)}.welcome{background:linear-gradient(115deg,#eee5d7,#faf7f1 72%);border:1px solid #e8ddcb;padding:27px 28px;position:relative;overflow:hidden}.welcome:after{content:'✧';position:absolute;right:32px;top:5px;font:100px var(--serif);color:#c4aa7a55}.welcome h2{font:600 26px var(--serif);margin:8px 0}.welcome p{color:#7f7669;margin:0;max-width:490px;line-height:1.7}.welcome .eyebrow{color:#9b8052}.formrow{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.field{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 11px;min-width:0;flex:1;color:var(--ink);outline:none}.field:focus,.search:focus,textarea:focus{border-color:var(--gold)}textarea.field{width:100%;min-height:110px;resize:vertical}.list{display:grid;gap:8px}.item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f0ebe4}.item:last-child{border:0}.item .grow{flex:1;min-width:0}.item.done .item-text{text-decoration:line-through;color:#aaa}.item-text{overflow-wrap:anywhere}.small{font-size:11px;color:var(--muted)}.tag{font-size:10px;padding:4px 7px;border-radius:20px;background:var(--panel2);color:#82745e}.iconbtn{border:0;background:transparent;color:#9b9285;padding:5px}.iconbtn:hover{color:var(--red)}.empty{padding:22px;text-align:center;color:#a49b8f;font-size:12px}.progress{height:7px;border-radius:9px;background:#eee8df;overflow:hidden}.progress>i{display:block;height:100%;background:var(--green);border-radius:9px}.section{display:none}.section.active{display:block}.section-intro{margin:-17px 0 22px;color:var(--muted)}.pillrow{display:flex;gap:7px;flex-wrap:wrap}.pill{border:1px solid var(--line);background:var(--panel);padding:7px 11px;border-radius:30px;color:var(--muted);font-size:11px}.pill.active{background:var(--gold2);color:#6f5b3d;border-color:#dfcfb5}.table{width:100%;border-collapse:collapse}.table th,.table td{text-align:left;padding:10px 7px;border-bottom:1px solid var(--line);font-size:12px}.table th{color:var(--muted);font-weight:600}.big-note{font:500 21px var(--serif);line-height:1.5;color:#665d50}.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.day{min-height:83px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px;font-size:11px}.day .num{color:var(--muted)}.day.today{border-color:var(--gold);background:#fbf7ef}.day .event-dot{display:block;background:var(--gold2);padding:3px 4px;border-radius:4px;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px}.weekdays{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:6px;color:var(--muted);font-size:10px;text-align:center}.note-card{cursor:pointer}.note-card:hover{border-color:#cdbb9c}.hidden{display:none!important}.mobile-head{display:none}.modal-back{position:fixed;inset:0;background:#2e292355;display:none;align-items:center;justify-content:center;padding:20px;z-index:20}.modal-back.open{display:flex}.modal{background:var(--panel);border-radius:16px;padding:24px;width:min(460px,100%);box-shadow:0 20px 70px #0002}.modal h3{font:600 22px var(--serif);margin:0 0 16px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}.toast{position:fixed;bottom:22px;right:22px;background:var(--ink);color:white;padding:12px 16px;border-radius:9px;font-size:12px;opacity:0;transform:translateY(8px);transition:.2s;z-index:30}.toast.show{opacity:1;transform:none}.bottomnav{display:none}.theme-dark{--bg:#24231f;--panel:#302e29;--panel2:#3b3831;--ink:#f0e9dd;--muted:#aaa193;--line:#48443c;--gold:#c5a875;--gold2:#4a4132;--shadow:0 10px 30px #0002}.theme-dark .field,.theme-dark .search,.theme-dark .day{background:#292722;color:var(--ink)}.theme-dark .welcome{background:l inear-gradient(115deg,#40392e,#302e29);border-color:#5a4c37}.theme-dark .welcome p{color:#c2b8a8} 
+
+@media(max-width:900px){.app{grid-template-columns:205px 1fr}.sidebar{padding:20px 10px}.main{padding:24px 20px 50px}.span-3{grid-column:span 6}} 
+
+@media(max-width:650px){.app{display:block}.sidebar{display:none}.main{padding:20px 15px 90px}.topbar{align-items:flex-start}.top-actions .search{width:130px}.top-actions .btn{display:none}.grid{gap:11px}.span-8,.span-7,.span-6,.span-5,.span-4{grid-column:span 12}.span-3{grid-column:span 6}.card{padding:15px}.welcome{padding:21px}.welcome:after{right:12px}.bottomnav{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--panel);border-top:1px solid var(--line);z-index:10;justify-content:space-around;padding:8px 4px calc(8px + env(safe-area-inset-bottom))}.bottomnav button{border:0;background:none;color:var(--muted);font-size:9px;display:grid;gap:3px;justify-items:center;padding:4px}.bottomnav button.active{color:var(--gold)}.bottomnav span{font-size:17px}.day{min-height:64px;padding:4px}.day .event-dot{font-size:8px}.mobile-head{display:block}.page-title{font-size:29px}.search{font-size:11px}} 
+
+</style></head> 
+
+<body><div class="app"><aside class="sidebar"><div class="brand"><div class="brand-name">lifehub<span>.</span></div><div class="tagline">YOUR LIFE. ORGANIZED.</div></div><div class="nav-label">WORKSPACE</div><nav class="nav" id="sideNav"></nav><div class="side-bottom"><div class="nav-label">PERSONALIZE</div><nav class="nav"><button data-page="settings"><span class="ico">⚙</span>Settings</button></nav><p class="small" style="padding:10px 12px;line-height:1.6">A little more clarity, every day.</p></div></aside><main class="main"><header class="topbar"><div><div class="eyebrow" id="dateLine">YOUR PERSONAL SPACE</div><h1 class="page-title" id="pageTitle">Overview</h1><div class="sub" id="pageSub">A calmer way to keep everything together.</div></div><div class="top-actions"><input class="search" id="globalSearch" placeholder="⌕  Search LifeHub..."><button class="btn" onclick="showPage('settings')">⚙</button></div></header><div id="pages"></div></main></div><nav class="bottomnav" id="bottomNav"></nav><div class="modal-back" id="modalBack"><div class="modal" id="modal"></div></div><div class="toast" id="toast"></div> 
+
+<script> 
+
+const pages=[['overview','Overview','⌂'],['tasks','To-do List','✓'],['calendar','Schedule','▦'],['money','My Money','$'],['shopping','Shopping','▤'],['habits','Habits','✧'],['notes','Quick Notes','▧'],['meals','Meal Planner','♧'],['home','Home & Cleaning','⌂'],['goals','Goals & Vision','◎'],['wellness','Self-care','♡'],['school','School & Work','▤'],['settings','Settings','⚙']]; 
+
+const oldKeys={tasks:'lifehub_tasks',events:'lifehub_events',expenses:'lifehub_expenses',shopping:'lifehub_shopping',habits:'lifehub_habits',budget:'lifehub_budget',notes:'lifehub_notes'}; 
+
+const defaults={tasks:[],events:[],expenses:[],income:[],shoppingLists:[{id:'main',name:'My Shopping List',items:[]}],habits:[],notesList:[],meals:[],chores:[],goals:[],wellness:[],school:[],bills:[],customSections:[],settings:{theme:'light',accent:'#b59662',font:'classic',cards:['tasks','events','money','habits']},budget:0}; 
+
+let data={};function load(){Object.keys(defaults).forEach(k=>{try{let v=localStorage.getItem('lh_'+k);data[k]=v?JSON.parse(v):structuredClone(defaults[k])}catch{data[k]=structuredClone(defaults[k])}});try{let v=localStorage.getItem(oldKeys.tasks);if(!data.tasks.length&&v)data.tasks=JSON.parse(v).map(x=>typeof x==='string'?{id:id(),text:x,done:false,priority:'Normal',category:'Personal',due:''}:({...x,id:x.id||id(),priority:x.priority||'Normal',category:x.category||'Personal',due:x.due||''}));}catch{};try{let v=localStorage.getItem(oldKeys.events);if(!data.events.length&&v)data.events=JSON.parse(v).map(x=>({...x,id:id()}))}catch{};try{let v=localStorage.getItem(oldKeys.expenses);if(!data.expenses.length&&v)data.expenses=JSON.parse(v).map(x=>({...x,id:id(),date:today()}))}catch{};try{let v=localStorage.getItem(oldKeys.shopping);if(v&&data.shoppingLists[0].items.length===0)data.shoppingLists[0].items=JSON.parse(v).map(x=>typeof x==='string'?{id:id(),text:x,done:false}:({...x,id:x.id||id()}))}catch{};try{let v=localStorage.getItem(oldKeys.habits);if(!data.habits.length&&v)data.habits=JSON.parse(v).map(x=>({...x,id:id()}))}catch{};try{let v=localStorage.getItem(oldKeys.notes);if(v&&!data.notesList.length&&v.trim())data.notesList=[{id:id(),title:'My notes',body:v,folder:'Personal',pinned:true,updated:today()}]}catch{};try{let v=localStorage.getItem(oldKeys.budget);if(!data.budget&&v)data.budget=Number(v)||0}catch{} } 
+
+function save(){Object.keys(data).forEach(k=>localStorage.setItem('lh_'+k,JSON.stringify(data[k])));localStorage.setItem(oldKeys.tasks,JSON.stringify(data.tasks));localStorage.setItem(oldKeys.events,JSON.stringify(data.events));localStorage.setItem(oldKeys.expenses,JSON.stringify(data.expenses));localStorage.setItem(oldKeys.shopping,JSON.stringify(data.shoppingLists[0]?.items||[]));localStorage.setItem(oldKeys.habits,JSON.stringify(data.habits));localStorage.setItem(oldKeys.notes,data.notesList[0]?.body||'');localStorage.setItem(oldKeys.budget,String(data.budget||0))} 
+
+function id(){return Math.random().toString(36).slice(2,10)}function today(){return new Date().toISOString().slice(0,10)}function money(n){return '$'+(Number(n)||0).toFixed(2)}function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function toast(s){let t=document.getElementById('toast');t.textContent=s;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}function field(ph,type='text',extra=''){return `<input class="field" placeholder="${ph}" type="${type}" ${extra}>`}function empty(s){return `<div class="empty">${s}</div>`}function card(title,body,span='span-6',extra=''){return `<section class="card ${span}" ${extra}><div class="card-head"><div class="card-title">${title}</div></div>${body}</section>`}function showPage(p){current=p;document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id==='page-'+p));document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===p));let info=pages.find(x=>x[0]===p);document.getElementById('pageTitle').textContent=info?.[1]||p;document.getElementById('pageSub').textContent=({overview:'A calmer way to keep everything together.',tasks:'Make space for what matters today.',calendar:'Your time, thoughtfully organized.',money:'A clearer picture of your money.',shopping:'Keep every list in one place.',habits:'Small steps become meaningful progress.',notes:'A home for all the things on your mind.',meals:'Plan meals and keep favorite recipes close.',home:'Make home feel a little more manageable.',goals:'Give your ideas a place to grow.',wellness:'Make room for taking care of yourself.',school:'Stay on top of classes, projects, and work.',settings:'Make LifeHub feel like yours.'})[p]||'Your personal workspace.';window.scrollTo(0,0)}let current='overview'; function nav(){let main=pages.filter(p=>p[0]!=='settings');document.getElementById('sideNav').innerHTML=main.map(p=>`<button data-page="${p[0]}" onclick="showPage('${p[0]}')"><span class="ico">${p[2]}</span>${p[1]}</button>`).join('');document.getElementById('bottomNav').innerHTML=[pages[0],pages[1],pages[2],pages[3],pages[6]].map(p=>`<button data-page="${p[0]}" onclick="showPage('${p[0]}')"><span>${p[2]}</span>${p[1]}</button>`).join('')} 
+
+function shell(){document.getElementById('pages').innerHTML=pages.map(p=>`<div class="section ${p[0]==='overview'?'active':''}" id="page-${p[0]}"></div>`).join('');} 
+
+function render(){renderOverview();renderTasks();renderCalendar();renderMoney();renderShopping();renderHabits();renderNotes();renderMeals();renderHome();renderGoals();renderWellness();renderSchool();renderSettings();} 
+
+function renderOverview(){let done=data.tasks.filter(x=>x.done).length,open=data.tasks.filter(x=>!x.done).length,spent=data.expenses.reduce((a,x)=>a+Number(x.amount||0),0),up=data.events.filter(x=>x.date>=today()).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,4);let quote=['Small steps, taken consistently, create beautiful change.','You do not have to do everything today. Just begin.','A little progress is still progress.','Make room for the life you want to live.'][new Date().getDate()%4];let html=`<div class="grid"><section class="card span-12 welcome"><div class="eyebrow">A FRESH START, EVERY DAY</div><h2>Welcome to your LifeHub.</h2><p>Your life has many moving parts. This is your space to bring them together, find your focus, and make today feel a little lighter.</p><p class="big-note" style="font-size:15px;margin-top:14px">“${quote}”</p></section>`; 
+
+[['To-do',''+open,'tasks','Open tasks'],['Upcoming',''+up.length,'calendar','Events ahead'],['Spent this month',money(spent),'money','Recorded expenses'],['Habits',''+data.habits.length,'habits','Habits you are building']].forEach(x=>html+=`<section class="card span-3"><div class="stat-label">${x[0]}</div><div class="stat">${x[1]}</div><div class="stat-label">${x[3]}</div><button class="iconbtn" onclick="showPage('${x[2]}')">View section →</button></section>`); 
+
+let taskHtml=data.tasks.filter(x=>!x.done).slice(0,5).map(t=>`<div class="item"><input type="checkbox" onchange="toggleTask('${t.id}')"><div class="grow"><div class="item-text">${esc(t.text)}</div><div class="small">${esc(t.category||'Personal')} · ${esc(t.due||'No due date')}</div></div><span class="tag">${esc(t.priority||'Normal')}</span></div>`).join('')||empty('Nothing waiting on you. Add a task when you are ready.');let eventHtml=up.map(e=>`<div class="item"><div class="tag">${esc(e.date)}</div><div class="grow"><div>${esc(e.name)}</div><div class="small">${esc(e.time||'')}</div></div></div>`).join('')||empty('Your upcoming schedule will appear here.');html+=card('A little focus for today',taskHtml+'<button class="btn" onclick="showPage(\'tasks\')">Open to-do list</button>','span-6')+card('Coming up',eventHtml+'<button class="btn" onclick="showPage(\'calendar\')">Open calendar</button>','span-6');html+='</div>';document.getElementById('page-overview').innerHTML=html} 
+
+function renderTasks(){let arr=data.tasks;document.getElementById('page-tasks').innerHTML=`<div class="card"><div class="card-head"><div class="card-title">Capture a task</div><span class="small">${arr.filter(x=>!x.done).length} remaining</span></div><form class="formrow" onsubmit="addTask(event)"><input class="field" id="taskText" placeholder="What needs to get done?" required><select class="field" id="taskPriority"><option>Normal</option><option>High</option><option>Low</option></select><input class="field" id="taskDue" type="date"><select class="field" id="taskCategory"><option>Personal</option><option>School</option><option>Work</option><option>Home</option><option>Errands</option></select><button class="btn primary">Add task +</button></form><div class="pillrow"><button class="pill active" onclick="taskFilter='all';renderTasks()">All</button><button class="pill" onclick="taskFilter='open';renderTasks()">To do</button><button class="pill" onclick="taskFilter='done';renderTasks()">Completed</button></div><div class="list" style="margin-top:12px">${arr.filter(x=>taskFilter==='all'||(taskFilter==='open'?!x.done:x.done)).map(t=>`<div class="item ${t.done?'done':''}"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask('${t.id}')"><div class="grow"><div class="item-text">${esc(t.text)}</div><div class="small">${esc(t.category||'Personal')} · ${t.due?'Due '+esc(t.due):'No due date'}</div></div><span class="tag">${esc(t.priority||'Normal')}</span><button class="iconbtn" onclick="editTask('${t.id}')">✎</button><button class="iconbtn" onclick="removeItem('tasks','${t.id}')">×</button></div>`).join('')||empty('Your list is clear. Add your first task above.')}</div></div>`} 
+
+let taskFilter='all';function addTask(e){e.preventDefault();data.tasks.unshift({id:id(),text:document.getElementById('taskText').value,priority:document.getElementById('taskPriority').value,due:document.getElementById('taskDue').value,category:document.getElementById('taskCategory').value,done:false,created:today()});save();render();toast('Task added')};function toggleTask(i){let t=data.tasks.find(x=>x.id===i);if(t)t.done=!t.done;save();render()};function editTask(i){let t=data.tasks.find(x=>x.id===i);if(!t)return;let v=prompt('Edit task',t.text);if(v!==null){t.text=v;save();render()}} 
+
+function renderCalendar(){let now=new Date(),y=now.getFullYear(),m=now.getMonth(),first=new Date(y,m,1),start=(first.getDay()),days=new Date(y,m+1,0).getDate();let cells='';for(let i=0;i<start;i++)cells+='<div></div>';for(let d=1;d<=days;d++){let date=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`,ev=data.events.filter(e=>e.date===date);cells+=`<div class="day ${date===today()?'today':''}"><div class="num">${d}</div>${ev.map(e=>`<span class="event-dot" title="${esc(e.name)}">${esc(e.name)}</span>`).join('')}</div>`}document.getElementById('page-calendar').innerHTML=`<div class="grid">${card('Add to your schedule',`<form class="formrow" onsubmit="addEvent(event)"><input class="field" id="eventName" placeholder="Event name" required><input class="field" id="eventDate" type="date" required><input class="field" id="eventTime" type="time"><button class="btn primary">Add event +</button></form><div class="list">${data.events.slice().sort((a,b)=>(a.date||'').localeCompare(b.date||'')).map(e=>`<div class="item"><div class="grow"><b>${esc(e.name)}</b><div class="small">${esc(e.date)} ${esc(e.time||'')}</div></div><button class="iconbtn" onclick="removeItem('events','${e.id}')">×</button></div>`).join('')||empty('No events added yet.')}</div>`,'span-5')}<section class="card span-7"><div class="card-head"><div class="card-title">${now.toLocaleString('en',{month:'long',year:'numeric'})}</div><span class="tag">Monthly view</span></div> <div><div class="weekdays">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(x=>`<div>${x}</div>`).join('')}</div><div class="calendar-grid">${cells}</div></section></div>`} 
+
+function addEvent(e){e.preventDefault();data.events.push({id:id(),name:eventName.value,date:eventDate.value,time:eventTime.value});save();render();toast('Event added')} 
+
+function renderMoney(){let spent=data.expenses.reduce((a,x)=>a+Number(x.amount||0),0),income=data.income.reduce((a,x)=>a+Number(x.amount||0),0),remain=Number(data.budget||0)-spent;document.getElementById('page-money').innerHTML=`<div class="grid">${card('Monthly budget',`<form class="formrow" onsubmit="setBudget(event)"><input class="field" id="budgetInput" type="number" min="0" step="0.01" value="${Number(data.budget)||''}" placeholder="Set your monthly budget"><button class="btn primary">Save budget</button></form><div class="stat">${money(remain)}</div><div class="stat-label">Estimated budget remaining · ${money(data.budget||0)} budget</div><div class="progress" style="margin-top:12px"><i style="width:${Math.min(100,data.budget?spent/data.budget*100:0)}%"></i></div>`,'span-6')}${card('At a glance',`<div class="item"><div class="grow">Income recorded</div><b>${money(income)}</b></div><div class="item"><div class="grow">Expenses recorded</div><b>${money(spent)}</b></div><div class="item"><div class="grow">Net recorded</div><b>${money(income-spent)}</b></div>`,'span-6')}${card('Add income or expense',`<form class="formrow" onsubmit="addMoney(event)"><input class="field" id="moneyName" placeholder="Description" required><input class="field" id="moneyAmount" type="number" min="0" step="0.01" placeholder="Amount" required><select class="field" id="moneyType"><option value="expense">Expense</option><option value="income">Income</option></select><button class="btn primary">Add entry</button></form><div class="list">${[...data.expenses.map(x=>({...x,type:'Expense'})),...data.income.map(x=>({...x,type:'Income'}))].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).map(x=>`<div class="item"><div class="grow"><b>${esc(x.name)}</b><div class="small">${x.type} · ${esc(x.date||'')}</div></div><b>${money(x.amount)}</b><button class="iconbtn" onclick="removeMoney('${x.id}','${x.type}')">×</button></div>`).join('')||empty('Your entries will appear here.')}</div>`,'span-7')}${card('Bills & savings goals',`<form class="formrow" onsubmit="addBill(event)"><input class="field" id="billName" placeholder="Bill or savings goal" required><input class="field" id="billAmount" type="number" min="0" step=".01" placeholder="Amount"><input class="field" id="billDue" type="date"><button class="btn">Add</button></form>${data.bills.map(b=>`<div class="item"><div class="grow">${esc(b.name)}<div class="small">${esc(b.due||'')}</div></div>${money(b.amount)}<button class="iconbtn" onclick="removeItem('bills','${b.id}')">×</button></div>`).join('')||empty('Add bills or savings targets to keep them visible.')}`,'span-5')}</div>`} 
+
+function setBudget(e){e.preventDefault();data.budget=Number(budgetInput.value);save();render();toast('Budget saved')}function addMoney(e){e.preventDefault();let x={id:id(),name:moneyName.value,amount:Number(moneyAmount.value),date:today()};(moneyType.value==='income'?data.income:data.expenses).unshift(x);save();render();toast('Entry saved')}function removeMoney(i,t){data[t==='Income'?'income':'expenses']=data[t==='Income'?'income':'expenses'].filter(x=>x.id!==i);save();render()}function addBill(e){e.preventDefault();data.bills.push({id:id(),name:billName.value,amount:Number(billAmount.value||0),due:billDue.value});save();render()} 
+
+function renderShopping(){let list=data.shoppingLists[0]||{id:'main',name:'My Shopping List',items:[]};document.getElementById('page-shopping').innerHTML=`<div class="grid">${card('Your lists',`<form class="formrow" onsubmit="newShopList(event)"><input class="field" id="shopListName" placeholder="Create another list" required><button class="btn">+ New list</button></form><div class="list">${data.shoppingLists.map(l=>`<div class="item"><div class="grow"><b>${esc(l.name)}</b><div class="small">${l.items.filter(x=>x.done).length}/${l.items.length} purchased</div></div><button class="iconbtn" onclick="selectShop('${l.id}')">Open</button></div>`).join('')}</div>`,'span-4')}${card(esc(list.name),`<form class="formrow" onsubmit="addShopItem(event)"><input class="field" id="shopItem" placeholder="Item to buy" required><input class="field" id="shopPrice" type="number" min="0" step=".01" placeholder="Price"><input class="field" id="shopStore" placeholder="Store"><select class="field" id="shopCategory"><option>General</option><option>Groceries</option><option>Personal</option><option>Clothing</option><option>Home</option><option>School</option></select><button class="btn primary">Add item</button></form><div class="list">${list.items.map(x=>`<div class="item ${x.done?'done':''}"><input type="checkbox" ${x.done?'checked':''} onchange="toggleShop('${x.id}')"><div class="grow"><div class="item-text">${esc(x.text)}</div><div class="small">${esc(x.category||'General')} · ${esc(x.store||'No store')}</div></div><b>${money(x.price)}</b><button class="iconbtn" onclick="removeShop('${x.id}')">×</button></div>`).join('')||empty('Your shopping list is ready for its first item.')}</div><div class="item"><div class="grow"><b>Estimated total</b></div><b>${money(list.items.reduce((a,x)=>a+Number(x.price||0),0))}</b></div>`,'span-8')}</div>`} 
+
+let activeShop='main';function selectShop(i){activeShop=i;let l=data.shoppingLists.find(x=>x.id===i);if(l){let idx=data.shoppingLists.indexOf(l);[data.shoppingLists[0],data.shoppingLists[idx]]=[data.shoppingLists[idx],data.shoppingLists[0]];save();renderShopping()}}function newShopList(e){e.preventDefault();data.shoppingLists.push({id:id(),name:shopListName.value,items:[]});save();renderShopping()}function addShopItem(e){e.preventDefault();data.shoppingLists[0].items.push({id:id(),text:shopItem.value,price:Number(shopPrice.value||0),store:shopStore.value,category:shopCategory.value,done:false});save();renderShopping()}function toggleShop(i){let x=data.shoppingLists[0].items.find(x=>x.id===i);if(x)x.done=!x.done;save();renderShopping()}function removeShop(i){data.shoppingLists[0].items=data.shoppingLists[0].items.filter(x=>x.id!==i);save();renderShopping()} 
+
+function renderHabits(){document.getElementById('page-habits').innerHTML=`<div class="grid">${card('Build a habit',`<form class="formrow" onsubmit="addHabit(event)"><input class="field" id="habitName" placeholder="A habit you want to build" required><select class="field" id="habitCategory"><option>Wellness</option><option>Personal</option><option>School</option><option>Home</option><option>Fitness</option></select><button class="btn primary">Add habit</button></form><div class="list">${data.habits.map(h=>{let count=(h.dates||[]).length,done=(h.dates||[]).includes(today());return `<div class="item"><input type="checkbox" ${done?'checked':''} onchange="mark Habit('${h.id}')"><div class="grow"><b>${esc(h.name||h.text)}</b><div class="small">${esc(h.category||'Personal')} · ${count} check-ins · ${count?count+' day streak total':'Start today'}</div></div><span class="tag">${done?'Done today':'Today'}</span><button class="iconbtn" onclick="removeItem('habits','${h.id}')">×</button></div>`}).join('')||empty('Add a habit you would like to practice consistently.')}</div>`,'span-7')}${card('Your consistency',`<div class="stat">${data.habits.filter(h=>(h.dates||[]).includes(today())).length}/${data.habits.length}</div><div class="stat-label">Habits checked off today</div><div class="progress" style="margin-top:14px"><i style="width:${data.habits.length?data.habits.filter(h=>(h.dates||[]).includes(today())).length/data.habits.length*100:0}%"></i></div><p class="small" style="line-height:1.7">Consistency is personal. Focus on showing up, not being perfect.</p>`,'span-5')}</div>`}function addHabit(e){e.preventDefault();data.habits.push({id:id(),name:habitName.value,category:habitCategory.value,dates:[]});save();render()}function markHabit(i){let h=data.habits.find(x=>x.id===i);if(!h.dates)h.dates=[];h.dates=h.dates.includes(today())?h.dates.filter(x=>x!==today()):[...h.dates,today()];save();render()} 
+
+function renderNotes(){document.getElementById('page-notes').innerHTML=`<div class="grid">${card('Create a note',`<form onsubmit="addNote(event)"><input class="field" id="noteTitle" placeholder="Note title" required style="width:100%;margin-bottom:8px"><input class="field" id="noteFolder" placeholder="Folder (e.g. Personal, Ideas)" style="width:100%;margin-bottom:8px"><textarea class="field" id="noteBody" placeholder="Write anything you want to remember..."></textarea><button class="btn primary" style="margin-top:9px">Save note</button></form>`,'span-5')}${card('Your notes',`<input class="field" id="noteSearch" placeholder="Search notes..." oninput="filterNotes(this.value)" style="width:100%;margin-bottom:12px"><div class="grid" id="noteList">${noteCards(data.notesList)}</div>`,'span-7')}</div>`}function noteCards(a){return a.slice().sort((x,y)=>Number(y.pinned)-Number(x.pinned)).map(n=>`<div class="card note-card span-12"><div class="card-head"><b>${esc(n.title)}</b><span><button class="iconbtn" onclick="pinNote('${n.id}')">${n.pinned?'★':'☆'}</button><button class="iconbtn" onclick="editNote('${n.id}')">✎</button><button class="iconbtn" onclick="removeItem('notesList','${n.id}')">×</button></span></div><div class="small">${esc(n.folder||'Personal')} · ${esc(n.updated||'')}</div><p>${esc((n.body||'').slice(0,180))}</p></div>`).join('')||empty('Your saved notes will live here.')}function addNote(e){e.preventDefault();data.notesList.unshift({id:id(),title:noteTitle.value,folder:noteFolder.value||'Personal',body:noteBody.value,pinned:false,updated:today()});save();renderNotes();toast('Note saved')}function filterNotes(q){document.getElementById('noteList').innerHTML=noteCards(data.notesList.filter(n=>(n.title+n.body+n.folder).toLowerCase().includes(q.toLowerCase())))}function editNote(i){let n=data.notesList.find(x=>x.id===i);if(!n)return;let t=prompt('Edit note title',n.title);if(t===null)return;let b=prompt('Edit note text',n.body);if(b!==null){n.title=t;n.body=b;n.updated=today();save();renderNotes()}}function pinNote(i){let n=data.notesList.find(x=>x.id===i);n.pinned=!n.pinned;save();renderNotes()} 
+
+function renderMeals(){document.getElementById('page-meals').innerHTML=`<div class="grid">${card('Add a meal or recipe',`<form class="formrow" onsubmit="addSimple(event,'meals',['mealName','mealType','mealDay'])"><input class="field" id="mealName" placeholder="Meal or recipe name" required><select class="field" id="mealType"><option>Breakfast</option><option>Lunch</option><option>Dinner</option><option>Snack</option><option>Recipe idea</option></select><input class="field" id="mealDay" type="date"><button class="btn primary">Add</button></form>`,'span-5')}${card('Meal plan & recipe ideas',simpleList('meals'),'span-7')}</div>`} 
+
+function renderHome(){document.getElementById('page-home').innerHTML=`<div class="grid">${card('Add a home task',`<form class="formrow" onsubmit="addSimple(event,'chores',['choreName','choreWhen'])"><input class="field" id="choreName" placeholder="What needs doing?" required><select class="field" id="choreWhen"><option>Daily</option><option>Weekly</option><option>Monthly</option><option>One-time</option></select><button class="btn primary">Add task</button></form>`,'span-5')}${card('Cleaning & home checklist',simpleList('chores'),'span-7')}</div>`} 
+
+function renderGoals(){document.getElementById('page-goals').innerHTML=`<div class="grid">${card('Add a goal',`<form class="formrow" onsubmit="addSimple(event,'goals',['goalName','goalDate'])"><input class="field" id="goalName" placeholder="What would you like to work toward?" required><input class="field" id="goalDate" type="date"><button class="btn primary">Add goal</button></form><p class="small">Break big dreams into small, achievable steps.</p>`,'span-5')}${card('Your goals',simpleList('goals'),'span-7')}<section class="card span-12"><div class="card-title">Vision board</div><textarea class="field" id="visionText" placeholder="Describe the life you are working toward: places, experiences, skills, dreams, and how you want your days to feel..." oninput="data.vision=this.value;save()">${esc(data.vision||'')}</textarea><div class="small">Your vision is saved automatically in this browser.</div></section></div>`} 
+
+function renderWellness(){document.getElementById('page-wellness').innerHTML=`<div class="grid">${card('A gentle check-in',`<form class="formrow" onsubmit="addWellness(event)"><input class="field" id="wellDate" type="date" value="${today()}"><select class="field" id="wellMood"><option>Feeling good</option><option>Okay</option><option>Low energy</option><option>Stressed</option><option>Need a reset</option></select><input class="field" id="wellNote" placeholder="A thought for today (optional)"><button class="btn primary">Save check-in</button></form>`,'span-5')}${card('Wellness journal',data.wellness.slice().reverse().map(x=>`<div class="item"><div class="grow"><b>${esc(x.mood)}</b><div class="small">${esc(x.date)} · ${esc(x.note||'')}</div></div><button class="iconbtn" onclick="removeItem('wellness','${x.id}')">×</button></div>`).join('')||empty('Your check-ins will appear here.'),'span-7')}<section class="card span-12"><div class="card-title">A small reminder</div><p class="big-note">Rest is part of making progress. You deserve care on ordinary days, too.</p></section></div>`}function addWellness(e){e.preventDefault();data.wellness.push({id:id(),date:wellDate.value,mood:wellMood.value,note:wellNote.value});save();renderWellness()} 
+
+function renderSchool(){document.getElementById('page-school').innerHTML=`<div class="grid">${card('Add an assignment or work task',`<form class="formrow" onsubmit="addSimple(event,'school',['schoolName','schoolDue','schoolType'])"><inpu t class="field" id="schoolName" placeholder="Assignment, project, or task" required><input class="field" id="schoolDue" type="date"><select class="field" id="schoolType"><option>School</option><option>Work</option><option>Study</option><option>Project</option></select><button class="btn primary">Add</button></form>`,'span-5')}${card('Your planner',simpleList('school'),'span-7')}</div>`} 
+
+function simpleList(k){return `<div class="list">${data[k].map(x=>`<div class="item ${x.done?'done':''}"><input type="checkbox" ${x.done?'checked':''} onchange="toggleSimple('${k}','${x.id}')"><div class="grow"><div class="item-text"><b>${esc(x.name)}</b></div><div class="small">${esc(x.type||x.when||x.date||x.due||'')}</div></div><button class="iconbtn" onclick="removeItem('${k}','${x.id}')">×</button></div>`).join('')||empty('Nothing here yet. Add your first item above.')}</div>`}function addSimple(e,k,ids){e.preventDefault();let vals=ids.map(x=>document.getElementById(x).value);let x={id:id(),name:vals[0],done:false};if(k==='meals'){x.type=vals[1];x.date=vals[2]}if(k==='chores')x.when=vals[1];if(k==='goals')x.due=vals[1];if(k==='school'){x.due=vals[1];x.type=vals[2]}data[k].push(x);save();render()};function toggleSimple(k,i){let x=data[k].find(x=>x.id===i);x.done=!x.done;save();render()} 
+
+function renderSettings(){let s=data.settings;document.getElementById('page-settings').innerHTML=`<div class="grid">${card('Appearance',`<div class="item"><div class="grow"><b>Color theme</b><div class="small">Choose the atmosphere for your workspace.</div></div><select class="field" style="max-width:150px" onchange="data.settings.theme=this.value;save();applyTheme()"><option value="light" ${s.theme==='light'?'selected':''}>Warm light</option><option value="dark" ${s.theme==='dark'?'selected':''}>Evening dark</option></select></div><div class="item"><div class="grow"><b>Accent color</b><div class="small">A subtle detail throughout LifeHub.</div></div><input type="color" value="${s.accent||'#b59662'}" onchange="data.settings.accent=this.value;save();applyTheme()"></div><div class="item"><div class="grow"><b>Heading style</b><div class="small">Classic serif or clean modern.</div></div><select class="field" style="max-width:150px" onchange="data.settings.font=this.value;save();applyTheme()"><option value="classic">Elegant</option><option value="modern">Modern</option></select></div>`,'span-6')}${card('Dashboard cards',`<p class="small">Choose which quick stats you want on your overview.</p>${['tasks','events','money','habits'].map(k=>`<label class="item"><input type="checkbox" ${s.cards.includes(k)?'checked':''} onchange="toggleCard('${k}')"><span>${k[0].toUpperCase()+k.slice(1)}</span></label>`).join('')}`,'span-6')}${card('Create your own section',`<form class="formrow" onsubmit="addCustom(event)"><input class="field" id="customName" placeholder="Your section name" required><button class="btn primary">Create section</button></form><div class="list">${data.customSections.map(x=>`<div class="item"><b>${esc(x.name)}</b><button class="iconbtn" onclick="removeItem('customSections','${x.id}')">×</button></div>`).join('')||empty('Your custom sections will appear here.')}</div>`,'span-6')}${card('Your data & privacy',`<p class="small" style="line-height:1.8">LifeHub saves information in this browser using local storage. It is not currently synced to an account or cloud, and it does not connect to your bank. Clearing browser data may erase your information. For important records, keep your own backup.</p><button class="btn" onclick="exportData()">Export my LifeHub data</button> <button class="btn" onclick="importData()">Import backup</button><input type="file" id="importFile" accept="application/json" class="hidden" onchange="readImport(event)">`,'span-6')}</div>`} 
+
+function applyTheme(){document.body.classList.toggle('theme-dark',data.settings.theme==='dark');document.documentElement.style.setProperty('--gold',data.settings.accent||'#b59662');document.documentElement.style.setProperty('--serif',data.settings.font==='modern'?'DM Sans,Arial,sans-serif':"'Playfair Display',Georgia,serif")}function toggleCard(k){let a=data.settings.cards;a.includes(k)?data.settings.cards=a.filter(x=>x!==k):a.push(k);save();renderSettings()}function addCustom(e){e.preventDefault();data.customSections.push({id:id(),name:customName.value});save();renderSettings();toast('Custom section created')} 
+
+function removeItem(k,i){data[k]=data[k].filter(x=>x.id!==i);save();render();toast('Removed')}function exportData(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='lifehub-backup.json';a.click();URL.revokeObjectURL(a.href)}function importData(){document.getElementById('importFile').click()}function readImport(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let v=JSON.parse(r.result);Object.keys(defaults).forEach(k=>{if(k in v)data[k]=v[k]});save();render();toast('Backup imported')}catch{toast('That backup could not be read')}};r.readAsText(f)} 
+
+document.getElementById('globalSearch').addEventListener('input',e=>{let q=e.target.value.trim().toLowerCase();if(!q)return;let matches=[];for(let [k,label] of [['tasks','To-do'],['events','Schedule'],['expenses','Expenses'],['shoppingLists','Shopping'],['habits','Habits'],['notesList','Notes'],['meals','Meals'],['chores','Home'],['goals','Goals'],['wellness','Wellness'],['school','School & Work']]){let arr=data[k]||[];arr.forEach(x=>{let s=JSON.stringify(x).toLowerCase();if(s.includes(q))matches.push(label+': '+(x.text||x.name||x.title||x.mood||'Item'))})}if(e.key==='Enter')alert(matches.slice(0,15).join('\n')||'No matches found.')}); 
+
+load();nav();shell();applyTheme();render();showPage('overview');document.getElementById('dateLine').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}).toUpperCase(); 
+
+</script></body></html> <!DOCTYPE html> 
+
+<html lang="en"> 
+
+<head> 
+
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f6f2eb"><title>LifeHub — Your life. Organized.</title> 
+
+<style> 
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap'); 
+
+:root{--bg:#f6f2eb;--panel:#fffdf9;--panel2:#f0e9de;--ink:#302c27;--muted:#898176;--line:#e8e0d5;--gold:#b59662;--gold2:#e9ddc8;--green:#788675;--red:#b87568;--shadow:0 10px 30px #4537210c;--serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',Arial,sans-serif} 
+
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px}button,input,select,textarea{font:inherit}button{cursor:pointer}.app{min-height:100vh;display:grid;grid-template-columns:248px 1fr}.sidebar{background:var(--panel);border-right:1px solid var(--line);padding:26px 16px;position:sticky;top:0;height:100vh;overflow:auto}.brand{padding:4px 12px 28px}.brand-name{font:600 30px var(--serif);letter-spacing:-1px}.brand-name span{color:var(--gold)}.tagline{font-size:9px;letter-spacing:2.3px;color:var(--muted);margin-top:4px}.nav-label{font-size:9px;font-weight:700;letter-spacing:1.8px;color:#aaa094;padding:14px 12px 8px}.nav{display:grid;gap:4px}.nav button{border:0;background:transparent;color:#766f65;text-align:left;padding:11px 12px;border-radius:10px;display:flex;gap:12px;align-items:center;font-size:13px}.nav button:hover,.nav button.active{background:var(--panel2);color:var(--ink)}.nav button.active{font-weight:700}.nav .ico{width:18px;text-align:center;color:var(--gold)}.side-bottom{margin-top:28px;border-top:1px solid var(--line);padding-top:14px}.main{min-width:0;padding:30px clamp(18px,4vw,54px) 70px;max-width:1600px;width:100%;margin:auto}.topbar{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:30px}.eyebrow{font-size:10px;letter-spacing:1.7px;color:var(--gold);font-weight:700;text-transform:uppercase}.page-title{font:600 clamp(27px,3vw,36px) var(--serif);margin:5px 0}.sub{color:var(--muted);font-size:13px}.top-actions{display:flex;gap:9px;align-items:center}.search{width:min(240px,28vw);background:var(--panel);border:1px solid var(--line);padding:10px 13px;border-radius:10px;outline:none}.btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:10px 14px;border-radius:9px;font-size:12px}.btn.primary{background:var(--ink);border-color:var(--ink);color:#fff}.btn.gold{background:var(--gold);border-color:var(--gold);color:white}.btn:hover{filter:brightness(.97)}.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:19px;box-shadow:var(--shadow);min-width:0}.span-12{grid-column:span 12}.span-8{grid-column:span 8}.span-7{grid-column:span 7}.span-6{grid-column:span 6}.span-5{grid-column:span 5}.span-4{grid-column:span 4}.span-3{grid-column:span 3}.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}.card-title{font:600 17px var(--serif)}.muted{color:var(--muted)}.stat{font:600 30px var(--serif);margin:8px 0 3px}.stat-label{font-size:11px;color:var(--muted)}.welcome{background:linear-gradient(115deg,#eee5d7,#faf7f1 72%);border:1px solid #e8ddcb;padding:27px 28px;position:relative;overflow:hidden}.welcome:after{content:'✧';position:absolute;right:32px;top:5px;font:100px var(--serif);color:#c4aa7a55}.welcome h2{font:600 26px var(--serif);margin:8px 0}.welcome p{color:#7f7669;margin:0;max-width:490px;line-height:1.7}.welcome .eyebrow{color:#9b8052}.formrow{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.field{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 11px;min-width:0;flex:1;color:var(--ink);outline:none}.field:focus,.search:focus,textarea:focus{border-color:var(--gold)}textarea.field{width:100%;min-height:110px;resize:vertical}.list{display:grid;gap:8px}.item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f0ebe4}.item:last-child{border:0}.item .grow{flex:1;min-width:0}.item.done .item-text{text-decoration:line-through;color:#aaa}.item-text{overflow-wrap:anywhere}.small{font-size:11px;color:var(--muted)}.tag{font-size:10px;padding:4px 7px;border-radius:20px;background:var(--panel2);color:#82745e}.iconbtn{border:0;background:transparent;color:#9b9285;padding:5px}.iconbtn:hover{color:var(--red)}.empty{padding:22px;text-align:center;color:#a49b8f;font-size:12px}.progress{height:7px;border-radius:9px;background:#eee8df;overflow:hidden}.progress>i{display:block;height:100%;background:var(--green);border-radius:9px}.section{display:none}.section.active{display:block}.section-intro{margin:-17px 0 22px;color:var(--muted)}.pillrow{display:flex;gap:7px;flex-wrap:wrap}.pill{border:1px solid var(--line);background:var(--panel);padding:7px 11px;border-radius:30px;color:var(--muted);font-size:11px}.pill.active{background:var(--gold2);color:#6f5b3d;border-color:#dfcfb5}.table{width:100%;border-collapse:collapse}.table th,.table td{text-align:left;padding:10px 7px;border-bottom:1px solid var(--line);font-size:12px}.table th{color:var(--muted);font-weight:600}.big-note{font:500 21px var(--serif);line-height:1.5;color:#665d50}.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.day{min-height:83px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px;font-size:11px}.day .num{color:var(--muted)}.day.today{border-color:var(--gold);background:#fbf7ef}.day .event-dot{display:block;background:var(--gold2);padding:3px 4px;border-radius:4px;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px}.weekdays{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:6px;color:var(--muted);font-size:10px;text-align:center}.note-card{cursor:pointer}.note-card:hover{border-color:#cdbb9c}.hidden{display:none!important}.mobile-head{display:none}.modal-back{position:fixed;inset:0;background:#2e292355;display:none;align-items:center;justify-content:center;padding:20px;z-index:20}.modal-back.open{display:flex}.modal{background:var(--panel);border-radius:16px;padding:24px;width:min(460px,100%);box-shadow:0 20px 70px #0002}.modal h3{font:600 22px var(--serif);margin:0 0 16px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}.toast{position:fixed;bottom:22px;right:22px;background:var(--ink);color:white;padding:12px 16px;border-radius:9px;font-size:12px;opacity:0;transform:translateY(8px);transition:.2s;z-index:30}.toast.show{opacity:1;transform:none}.bottomnav{display:none}.theme-dark{--bg:#24231f;--panel:#302e29;--panel2:#3b3831;--ink:#f0e9dd;--muted:#aaa193;--line:#48443c;--gold:#c5a875;--gold2:#4a4132;--shadow:0 10px 30px #0002}.theme-dark .field,.theme-dark .search,.theme-dark .day{background:#292722;color:var(--ink)}.theme-dark .welcome{background:l inear-gradient(115deg,#40392e,#302e29);border-color:#5a4c37}.theme-dark .welcome p{color:#c2b8a8} 
+
+@media(max-width:900px){.app{grid-template-columns:205px 1fr}.sidebar{padding:20px 10px}.main{padding:24px 20px 50px}.span-3{grid-column:span 6}} 
+
+@media(max-width:650px){.app{display:block}.sidebar{display:none}.main{padding:20px 15px 90px}.topbar{align-items:flex-start}.top-actions .search{width:130px}.top-actions .btn{display:none}.grid{gap:11px}.span-8,.span-7,.span-6,.span-5,.span-4{grid-column:span 12}.span-3{grid-column:span 6}.card{padding:15px}.welcome{padding:21px}.welcome:after{right:12px}.bottomnav{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--panel);border-top:1px solid var(--line);z-index:10;justify-content:space-around;padding:8px 4px calc(8px + env(safe-area-inset-bottom))}.bottomnav button{border:0;background:none;color:var(--muted);font-size:9px;display:grid;gap:3px;justify-items:center;padding:4px}.bottomnav button.active{color:var(--gold)}.bottomnav span{font-size:17px}.day{min-height:64px;padding:4px}.day .event-dot{font-size:8px}.mobile-head{display:block}.page-title{font-size:29px}.search{font-size:11px}} 
+
+</style></head> 
+
+<body><div class="app"><aside class="sidebar"><div class="brand"><div class="brand-name">lifehub<span>.</span></div><div class="tagline">YOUR LIFE. ORGANIZED.</div></div><div class="nav-label">WORKSPACE</div><nav class="nav" id="sideNav"></nav><div class="side-bottom"><div class="nav-label">PERSONALIZE</div><nav class="nav"><button data-page="settings"><span class="ico">⚙</span>Settings</button></nav><p class="small" style="padding:10px 12px;line-height:1.6">A little more clarity, every day.</p></div></aside><main class="main"><header class="topbar"><div><div class="eyebrow" id="dateLine">YOUR PERSONAL SPACE</div><h1 class="page-title" id="pageTitle">Overview</h1><div class="sub" id="pageSub">A calmer way to keep everything together.</div></div><div class="top-actions"><input class="search" id="globalSearch" placeholder="⌕  Search LifeHub..."><button class="btn" onclick="showPage('settings')">⚙</button></div></header><div id="pages"></div></main></div><nav class="bottomnav" id="bottomNav"></nav><div class="modal-back" id="modalBack"><div class="modal" id="modal"></div></div><div class="toast" id="toast"></div> 
+
+<script> 
+
+const pages=[['overview','Overview','⌂'],['tasks','To-do List','✓'],['calendar','Schedule','▦'],['money','My Money','$'],['shopping','Shopping','▤'],['habits','Habits','✧'],['notes','Quick Notes','▧'],['meals','Meal Planner','♧'],['home','Home & Cleaning','⌂'],['goals','Goals & Vision','◎'],['wellness','Self-care','♡'],['school','School & Work','▤'],['settings','Settings','⚙']]; 
+
+const oldKeys={tasks:'lifehub_tasks',events:'lifehub_events',expenses:'lifehub_expenses',shopping:'lifehub_shopping',habits:'lifehub_habits',budget:'lifehub_budget',notes:'lifehub_notes'}; 
+
+const defaults={tasks:[],events:[],expenses:[],income:[],shoppingLists:[{id:'main',name:'My Shopping List',items:[]}],habits:[],notesList:[],meals:[],chores:[],goals:[],wellness:[],school:[],bills:[],customSections:[],settings:{theme:'light',accent:'#b59662',font:'classic',cards:['tasks','events','money','habits']},budget:0}; 
+
+let data={};function load(){Object.keys(defaults).forEach(k=>{try{let v=localStorage.getItem('lh_'+k);data[k]=v?JSON.parse(v):structuredClone(defaults[k])}catch{data[k]=structuredClone(defaults[k])}});try{let v=localStorage.getItem(oldKeys.tasks);if(!data.tasks.length&&v)data.tasks=JSON.parse(v).map(x=>typeof x==='string'?{id:id(),text:x,done:false,priority:'Normal',category:'Personal',due:''}:({...x,id:x.id||id(),priority:x.priority||'Normal',category:x.category||'Personal',due:x.due||''}));}catch{};try{let v=localStorage.getItem(oldKeys.events);if(!data.events.length&&v)data.events=JSON.parse(v).map(x=>({...x,id:id()}))}catch{};try{let v=localStorage.getItem(oldKeys.expenses);if(!data.expenses.length&&v)data.expenses=JSON.parse(v).map(x=>({...x,id:id(),date:today()}))}catch{};try{let v=localStorage.getItem(oldKeys.shopping);if(v&&data.shoppingLists[0].items.length===0)data.shoppingLists[0].items=JSON.parse(v).map(x=>typeof x==='string'?{id:id(),text:x,done:false}:({...x,id:x.id||id()}))}catch{};try{let v=localStorage.getItem(oldKeys.habits);if(!data.habits.length&&v)data.habits=JSON.parse(v).map(x=>({...x,id:id()}))}catch{};try{let v=localStorage.getItem(oldKeys.notes);if(v&&!data.notesList.length&&v.trim())data.notesList=[{id:id(),title:'My notes',body:v,folder:'Personal',pinned:true,updated:today()}]}catch{};try{let v=localStorage.getItem(oldKeys.budget);if(!data.budget&&v)data.budget=Number(v)||0}catch{} } 
+
+function save(){Object.keys(data).forEach(k=>localStorage.setItem('lh_'+k,JSON.stringify(data[k])));localStorage.setItem(oldKeys.tasks,JSON.stringify(data.tasks));localStorage.setItem(oldKeys.events,JSON.stringify(data.events));localStorage.setItem(oldKeys.expenses,JSON.stringify(data.expenses));localStorage.setItem(oldKeys.shopping,JSON.stringify(data.shoppingLists[0]?.items||[]));localStorage.setItem(oldKeys.habits,JSON.stringify(data.habits));localStorage.setItem(oldKeys.notes,data.notesList[0]?.body||'');localStorage.setItem(oldKeys.budget,String(data.budget||0))} 
+
+function id(){return Math.random().toString(36).slice(2,10)}function today(){return new Date().toISOString().slice(0,10)}function money(n){return '$'+(Number(n)||0).toFixed(2)}function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function toast(s){let t=document.getElementById('toast');t.textContent=s;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}function field(ph,type='text',extra=''){return `<input class="field" placeholder="${ph}" type="${type}" ${extra}>`}function empty(s){return `<div class="empty">${s}</div>`}function card(title,body,span='span-6',extra=''){return `<section class="card ${span}" ${extra}><div class="card-head"><div class="card-title">${title}</div></div>${body}</section>`}function showPage(p){current=p;document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id==='page-'+p));document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===p));let info=pages.find(x=>x[0]===p);document.getElementById('pageTitle').textContent=info?.[1]||p;document.getElementById('pageSub').textContent=({overview:'A calmer way to keep everything together.',tasks:'Make space for what matters today.',calendar:'Your time, thoughtfully organized.',money:'A clearer picture of your money.',shopping:'Keep every list in one place.',habits:'Small steps become meaningful progress.',notes:'A home for all the things on your mind.',meals:'Plan meals and keep favorite recipes close.',home:'Make home feel a little more manageable.',goals:'Give your ideas a place to grow.',wellness:'Make room for taking care of yourself.',school:'Stay on top of classes, projects, and work.',settings:'Make LifeHub feel like yours.'})[p]||'Your personal workspace.';window.scrollTo(0,0)}let current='overview'; function nav(){let main=pages.filter(p=>p[0]!=='settings');document.getElementById('sideNav').innerHTML=main.map(p=>`<button data-page="${p[0]}" onclick="showPage('${p[0]}')"><span class="ico">${p[2]}</span>${p[1]}</button>`).join('');document.getElementById('bottomNav').innerHTML=[pages[0],pages[1],pages[2],pages[3],pages[6]].map(p=>`<button data-page="${p[0]}" onclick="showPage('${p[0]}')"><span>${p[2]}</span>${p[1]}</button>`).join('')} 
+
+function shell(){document.getElementById('pages').innerHTML=pages.map(p=>`<div class="section ${p[0]==='overview'?'active':''}" id="page-${p[0]}"></div>`).join('');} 
+
+function render(){renderOverview();renderTasks();renderCalendar();renderMoney();renderShopping();renderHabits();renderNotes();renderMeals();renderHome();renderGoals();renderWellness();renderSchool();renderSettings();} 
+
+function renderOverview(){let done=data.tasks.filter(x=>x.done).length,open=data.tasks.filter(x=>!x.done).length,spent=data.expenses.reduce((a,x)=>a+Number(x.amount||0),0),up=data.events.filter(x=>x.date>=today()).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,4);let quote=['Small steps, taken consistently, create beautiful change.','You do not have to do everything today. Just begin.','A little progress is still progress.','Make room for the life you want to live.'][new Date().getDate()%4];let html=`<div class="grid"><section class="card span-12 welcome"><div class="eyebrow">A FRESH START, EVERY DAY</div><h2>Welcome to your LifeHub.</h2><p>Your life has many moving parts. This is your space to bring them together, find your focus, and make today feel a little lighter.</p><p class="big-note" style="font-size:15px;margin-top:14px">“${quote}”</p></section>`; 
+
+[['To-do',''+open,'tasks','Open tasks'],['Upcoming',''+up.length,'calendar','Events ahead'],['Spent this month',money(spent),'money','Recorded expenses'],['Habits',''+data.habits.length,'habits','Habits you are building']].forEach(x=>html+=`<section class="card span-3"><div class="stat-label">${x[0]}</div><div class="stat">${x[1]}</div><div class="stat-label">${x[3]}</div><button class="iconbtn" onclick="showPage('${x[2]}')">View section →</button></section>`); 
+
+let taskHtml=data.tasks.filter(x=>!x.done).slice(0,5).map(t=>`<div class="item"><input type="checkbox" onchange="toggleTask('${t.id}')"><div class="grow"><div class="item-text">${esc(t.text)}</div><div class="small">${esc(t.category||'Personal')} · ${esc(t.due||'No due date')}</div></div><span class="tag">${esc(t.priority||'Normal')}</span></div>`).join('')||empty('Nothing waiting on you. Add a task when you are ready.');let eventHtml=up.map(e=>`<div class="item"><div class="tag">${esc(e.date)}</div><div class="grow"><div>${esc(e.name)}</div><div class="small">${esc(e.time||'')}</div></div></div>`).join('')||empty('Your upcoming schedule will appear here.');html+=card('A little focus for today',taskHtml+'<button class="btn" onclick="showPage(\'tasks\')">Open to-do list</button>','span-6')+card('Coming up',eventHtml+'<button class="btn" onclick="showPage(\'calendar\')">Open calendar</button>','span-6');html+='</div>';document.getElementById('page-overview').innerHTML=html} 
+
+function renderTasks(){let arr=data.tasks;document.getElementById('page-tasks').innerHTML=`<div class="card"><div class="card-head"><div class="card-title">Capture a task</div><span class="small">${arr.filter(x=>!x.done).length} remaining</span></div><form class="formrow" onsubmit="addTask(event)"><input class="field" id="taskText" placeholder="What needs to get done?" required><select class="field" id="taskPriority"><option>Normal</option><option>High</option><option>Low</option></select><input class="field" id="taskDue" type="date"><select class="field" id="taskCategory"><option>Personal</option><option>School</option><option>Work</option><option>Home</option><option>Errands</option></select><button class="btn primary">Add task +</button></form><div class="pillrow"><button class="pill active" onclick="taskFilter='all';renderTasks()">All</button><button class="pill" onclick="taskFilter='open';renderTasks()">To do</button><button class="pill" onclick="taskFilter='done';renderTasks()">Completed</button></div><div class="list" style="margin-top:12px">${arr.filter(x=>taskFilter==='all'||(taskFilter==='open'?!x.done:x.done)).map(t=>`<div class="item ${t.done?'done':''}"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask('${t.id}')"><div class="grow"><div class="item-text">${esc(t.text)}</div><div class="small">${esc(t.category||'Personal')} · ${t.due?'Due '+esc(t.due):'No due date'}</div></div><span class="tag">${esc(t.priority||'Normal')}</span><button class="iconbtn" onclick="editTask('${t.id}')">✎</button><button class="iconbtn" onclick="removeItem('tasks','${t.id}')">×</button></div>`).join('')||empty('Your list is clear. Add your first task above.')}</div></div>`} 
+
+let taskFilter='all';function addTask(e){e.preventDefault();data.tasks.unshift({id:id(),text:document.getElementById('taskText').value,priority:document.getElementById('taskPriority').value,due:document.getElementById('taskDue').value,category:document.getElementById('taskCategory').value,done:false,created:today()});save();render();toast('Task added')};function toggleTask(i){let t=data.tasks.find(x=>x.id===i);if(t)t.done=!t.done;save();render()};function editTask(i){let t=data.tasks.find(x=>x.id===i);if(!t)return;let v=prompt('Edit task',t.text);if(v!==null){t.text=v;save();render()}} 
+
+function renderCalendar(){let now=new Date(),y=now.getFullYear(),m=now.getMonth(),first=new Date(y,m,1),start=(first.getDay()),days=new Date(y,m+1,0).getDate();let cells='';for(let i=0;i<start;i++)cells+='<div></div>';for(let d=1;d<=days;d++){let date=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`,ev=data.events.filter(e=>e.date===date);cells+=`<div class="day ${date===today()?'today':''}"><div class="num">${d}</div>${ev.map(e=>`<span class="event-dot" title="${esc(e.name)}">${esc(e.name)}</span>`).join('')}</div>`}document.getElementById('page-calendar').innerHTML=`<div class="grid">${card('Add to your schedule',`<form class="formrow" onsubmit="addEvent(event)"><input class="field" id="eventName" placeholder="Event name" required><input class="field" id="eventDate" type="date" required><input class="field" id="eventTime" type="time"><button class="btn primary">Add event +</button></form><div class="list">${data.events.slice().sort((a,b)=>(a.date||'').localeCompare(b.date||'')).map(e=>`<div class="item"><div class="grow"><b>${esc(e.name)}</b><div class="small">${esc(e.date)} ${esc(e.time||'')}</div></div><button class="iconbtn" onclick="removeItem('events','${e.id}')">×</button></div>`).join('')||empty('No events added yet.')}</div>`,'span-5')}<section class="card span-7"><div class="card-head"><div class="card-title">${now.toLocaleString('en',{month:'long',year:'numeric'})}</div><span class="tag">Monthly view</span></div> <div><div class="weekdays">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(x=>`<div>${x}</div>`).join('')}</div><div class="calendar-grid">${cells}</div></section></div>`} 
+
+function addEvent(e){e.preventDefault();data.events.push({id:id(),name:eventName.value,date:eventDate.value,time:eventTime.value});save();render();toast('Event added')} 
+
+function renderMoney(){let spent=data.expenses.reduce((a,x)=>a+Number(x.amount||0),0),income=data.income.reduce((a,x)=>a+Number(x.amount||0),0),remain=Number(data.budget||0)-spent;document.getElementById('page-money').innerHTML=`<div class="grid">${card('Monthly budget',`<form class="formrow" onsubmit="setBudget(event)"><input class="field" id="budgetInput" type="number" min="0" step="0.01" value="${Number(data.budget)||''}" placeholder="Set your monthly budget"><button class="btn primary">Save budget</button></form><div class="stat">${money(remain)}</div><div class="stat-label">Estimated budget remaining · ${money(data.budget||0)} budget</div><div class="progress" style="margin-top:12px"><i style="width:${Math.min(100,data.budget?spent/data.budget*100:0)}%"></i></div>`,'span-6')}${card('At a glance',`<div class="item"><div class="grow">Income recorded</div><b>${money(income)}</b></div><div class="item"><div class="grow">Expenses recorded</div><b>${money(spent)}</b></div><div class="item"><div class="grow">Net recorded</div><b>${money(income-spent)}</b></div>`,'span-6')}${card('Add income or expense',`<form class="formrow" onsubmit="addMoney(event)"><input class="field" id="moneyName" placeholder="Description" required><input class="field" id="moneyAmount" type="number" min="0" step="0.01" placeholder="Amount" required><select class="field" id="moneyType"><option value="expense">Expense</option><option value="income">Income</option></select><button class="btn primary">Add entry</button></form><div class="list">${[...data.expenses.map(x=>({...x,type:'Expense'})),...data.income.map(x=>({...x,type:'Income'}))].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).map(x=>`<div class="item"><div class="grow"><b>${esc(x.name)}</b><div class="small">${x.type} · ${esc(x.date||'')}</div></div><b>${money(x.amount)}</b><button class="iconbtn" onclick="removeMoney('${x.id}','${x.type}')">×</button></div>`).join('')||empty('Your entries will appear here.')}</div>`,'span-7')}${card('Bills & savings goals',`<form class="formrow" onsubmit="addBill(event)"><input class="field" id="billName" placeholder="Bill or savings goal" required><input class="field" id="billAmount" type="number" min="0" step=".01" placeholder="Amount"><input class="field" id="billDue" type="date"><button class="btn">Add</button></form>${data.bills.map(b=>`<div class="item"><div class="grow">${esc(b.name)}<div class="small">${esc(b.due||'')}</div></div>${money(b.amount)}<button class="iconbtn" onclick="removeItem('bills','${b.id}')">×</button></div>`).join('')||empty('Add bills or savings targets to keep them visible.')}`,'span-5')}</div>`} 
+
+function setBudget(e){e.preventDefault();data.budget=Number(budgetInput.value);save();render();toast('Budget saved')}function addMoney(e){e.preventDefault();let x={id:id(),name:moneyName.value,amount:Number(moneyAmount.value),date:today()};(moneyType.value==='income'?data.income:data.expenses).unshift(x);save();render();toast('Entry saved')}function removeMoney(i,t){data[t==='Income'?'income':'expenses']=data[t==='Income'?'income':'expenses'].filter(x=>x.id!==i);save();render()}function addBill(e){e.preventDefault();data.bills.push({id:id(),name:billName.value,amount:Number(billAmount.value||0),due:billDue.value});save();render()} 
+
+function renderShopping(){let list=data.shoppingLists[0]||{id:'main',name:'My Shopping List',items:[]};document.getElementById('page-shopping').innerHTML=`<div class="grid">${card('Your lists',`<form class="formrow" onsubmit="newShopList(event)"><input class="field" id="shopListName" placeholder="Create another list" required><button class="btn">+ New list</button></form><div class="list">${data.shoppingLists.map(l=>`<div class="item"><div class="grow"><b>${esc(l.name)}</b><div class="small">${l.items.filter(x=>x.done).length}/${l.items.length} purchased</div></div><button class="iconbtn" onclick="selectShop('${l.id}')">Open</button></div>`).join('')}</div>`,'span-4')}${card(esc(list.name),`<form class="formrow" onsubmit="addShopItem(event)"><input class="field" id="shopItem" placeholder="Item to buy" required><input class="field" id="shopPrice" type="number" min="0" step=".01" placeholder="Price"><input class="field" id="shopStore" placeholder="Store"><select class="field" id="shopCategory"><option>General</option><option>Groceries</option><option>Personal</option><option>Clothing</option><option>Home</option><option>School</option></select><button class="btn primary">Add item</button></form><div class="list">${list.items.map(x=>`<div class="item ${x.done?'done':''}"><input type="checkbox" ${x.done?'checked':''} onchange="toggleShop('${x.id}')"><div class="grow"><div class="item-text">${esc(x.text)}</div><div class="small">${esc(x.category||'General')} · ${esc(x.store||'No store')}</div></div><b>${money(x.price)}</b><button class="iconbtn" onclick="removeShop('${x.id}')">×</button></div>`).join('')||empty('Your shopping list is ready for its first item.')}</div><div class="item"><div class="grow"><b>Estimated total</b></div><b>${money(list.items.reduce((a,x)=>a+Number(x.price||0),0))}</b></div>`,'span-8')}</div>`} 
+
+let activeShop='main';function selectShop(i){activeShop=i;let l=data.shoppingLists.find(x=>x.id===i);if(l){let idx=data.shoppingLists.indexOf(l);[data.shoppingLists[0],data.shoppingLists[idx]]=[data.shoppingLists[idx],data.shoppingLists[0]];save();renderShopping()}}function newShopList(e){e.preventDefault();data.shoppingLists.push({id:id(),name:shopListName.value,items:[]});save();renderShopping()}function addShopItem(e){e.preventDefault();data.shoppingLists[0].items.push({id:id(),text:shopItem.value,price:Number(shopPrice.value||0),store:shopStore.value,category:shopCategory.value,done:false});save();renderShopping()}function toggleShop(i){let x=data.shoppingLists[0].items.find(x=>x.id===i);if(x)x.done=!x.done;save();renderShopping()}function removeShop(i){data.shoppingLists[0].items=data.shoppingLists[0].items.filter(x=>x.id!==i);save();renderShopping()} 
+
+function renderHabits(){document.getElementById('page-habits').innerHTML=`<div class="grid">${card('Build a habit',`<form class="formrow" onsubmit="addHabit(event)"><input class="field" id="habitName" placeholder="A habit you want to build" required><select class="field" id="habitCategory"><option>Wellness</option><option>Personal</option><option>School</option><option>Home</option><option>Fitness</option></select><button class="btn primary">Add habit</button></form><div class="list">${data.habits.map(h=>{let count=(h.dates||[]).length,done=(h.dates||[]).includes(today());return `<div class="item"><input type="checkbox" ${done?'checked':''} onchange="mark Habit('${h.id}')"><div class="grow"><b>${esc(h.name||h.text)}</b><div class="small">${esc(h.category||'Personal')} · ${count} check-ins · ${count?count+' day streak total':'Start today'}</div></div><span class="tag">${done?'Done today':'Today'}</span><button class="iconbtn" onclick="removeItem('habits','${h.id}')">×</button></div>`}).join('')||empty('Add a habit you would like to practice consistently.')}</div>`,'span-7')}${card('Your consistency',`<div class="stat">${data.habits.filter(h=>(h.dates||[]).includes(today())).length}/${data.habits.length}</div><div class="stat-label">Habits checked off today</div><div class="progress" style="margin-top:14px"><i style="width:${data.habits.length?data.habits.filter(h=>(h.dates||[]).includes(today())).length/data.habits.length*100:0}%"></i></div><p class="small" style="line-height:1.7">Consistency is personal. Focus on showing up, not being perfect.</p>`,'span-5')}</div>`}function addHabit(e){e.preventDefault();data.habits.push({id:id(),name:habitName.value,category:habitCategory.value,dates:[]});save();render()}function markHabit(i){let h=data.habits.find(x=>x.id===i);if(!h.dates)h.dates=[];h.dates=h.dates.includes(today())?h.dates.filter(x=>x!==today()):[...h.dates,today()];save();render()} 
+
+function renderNotes(){document.getElementById('page-notes').innerHTML=`<div class="grid">${card('Create a note',`<form onsubmit="addNote(event)"><input class="field" id="noteTitle" placeholder="Note title" required style="width:100%;margin-bottom:8px"><input class="field" id="noteFolder" placeholder="Folder (e.g. Personal, Ideas)" style="width:100%;margin-bottom:8px"><textarea class="field" id="noteBody" placeholder="Write anything you want to remember..."></textarea><button class="btn primary" style="margin-top:9px">Save note</button></form>`,'span-5')}${card('Your notes',`<input class="field" id="noteSearch" placeholder="Search notes..." oninput="filterNotes(this.value)" style="width:100%;margin-bottom:12px"><div class="grid" id="noteList">${noteCards(data.notesList)}</div>`,'span-7')}</div>`}function noteCards(a){return a.slice().sort((x,y)=>Number(y.pinned)-Number(x.pinned)).map(n=>`<div class="card note-card span-12"><div class="card-head"><b>${esc(n.title)}</b><span><button class="iconbtn" onclick="pinNote('${n.id}')">${n.pinned?'★':'☆'}</button><button class="iconbtn" onclick="editNote('${n.id}')">✎</button><button class="iconbtn" onclick="removeItem('notesList','${n.id}')">×</button></span></div><div class="small">${esc(n.folder||'Personal')} · ${esc(n.updated||'')}</div><p>${esc((n.body||'').slice(0,180))}</p></div>`).join('')||empty('Your saved notes will live here.')}function addNote(e){e.preventDefault();data.notesList.unshift({id:id(),title:noteTitle.value,folder:noteFolder.value||'Personal',body:noteBody.value,pinned:false,updated:today()});save();renderNotes();toast('Note saved')}function filterNotes(q){document.getElementById('noteList').innerHTML=noteCards(data.notesList.filter(n=>(n.title+n.body+n.folder).toLowerCase().includes(q.toLowerCase())))}function editNote(i){let n=data.notesList.find(x=>x.id===i);if(!n)return;let t=prompt('Edit note title',n.title);if(t===null)return;let b=prompt('Edit note text',n.body);if(b!==null){n.title=t;n.body=b;n.updated=today();save();renderNotes()}}function pinNote(i){let n=data.notesList.find(x=>x.id===i);n.pinned=!n.pinned;save();renderNotes()} 
+
+function renderMeals(){document.getElementById('page-meals').innerHTML=`<div class="grid">${card('Add a meal or recipe',`<form class="formrow" onsubmit="addSimple(event,'meals',['mealName','mealType','mealDay'])"><input class="field" id="mealName" placeholder="Meal or recipe name" required><select class="field" id="mealType"><option>Breakfast</option><option>Lunch</option><option>Dinner</option><option>Snack</option><option>Recipe idea</option></select><input class="field" id="mealDay" type="date"><button class="btn primary">Add</button></form>`,'span-5')}${card('Meal plan & recipe ideas',simpleList('meals'),'span-7')}</div>`} 
+
+function renderHome(){document.getElementById('page-home').innerHTML=`<div class="grid">${card('Add a home task',`<form class="formrow" onsubmit="addSimple(event,'chores',['choreName','choreWhen'])"><input class="field" id="choreName" placeholder="What needs doing?" required><select class="field" id="choreWhen"><option>Daily</option><option>Weekly</option><option>Monthly</option><option>One-time</option></select><button class="btn primary">Add task</button></form>`,'span-5')}${card('Cleaning & home checklist',simpleList('chores'),'span-7')}</div>`} 
+
+function renderGoals(){document.getElementById('page-goals').innerHTML=`<div class="grid">${card('Add a goal',`<form class="formrow" onsubmit="addSimple(event,'goals',['goalName','goalDate'])"><input class="field" id="goalName" placeholder="What would you like to work toward?" required><input class="field" id="goalDate" type="date"><button class="btn primary">Add goal</button></form><p class="small">Break big dreams into small, achievable steps.</p>`,'span-5')}${card('Your goals',simpleList('goals'),'span-7')}<section class="card span-12"><div class="card-title">Vision board</div><textarea class="field" id="visionText" placeholder="Describe the life you are working toward: places, experiences, skills, dreams, and how you want your days to feel..." oninput="data.vision=this.value;save()">${esc(data.vision||'')}</textarea><div class="small">Your vision is saved automatically in this browser.</div></section></div>`} 
+
+function renderWellness(){document.getElementById('page-wellness').innerHTML=`<div class="grid">${card('A gentle check-in',`<form class="formrow" onsubmit="addWellness(event)"><input class="field" id="wellDate" type="date" value="${today()}"><select class="field" id="wellMood"><option>Feeling good</option><option>Okay</option><option>Low energy</option><option>Stressed</option><option>Need a reset</option></select><input class="field" id="wellNote" placeholder="A thought for today (optional)"><button class="btn primary">Save check-in</button></form>`,'span-5')}${card('Wellness journal',data.wellness.slice().reverse().map(x=>`<div class="item"><div class="grow"><b>${esc(x.mood)}</b><div class="small">${esc(x.date)} · ${esc(x.note||'')}</div></div><button class="iconbtn" onclick="removeItem('wellness','${x.id}')">×</button></div>`).join('')||empty('Your check-ins will appear here.'),'span-7')}<section class="card span-12"><div class="card-title">A small reminder</div><p class="big-note">Rest is part of making progress. You deserve care on ordinary days, too.</p></section></div>`}function addWellness(e){e.preventDefault();data.wellness.push({id:id(),date:wellDate.value,mood:wellMood.value,note:wellNote.value});save();renderWellness()} 
+
+function renderSchool(){document.getElementById('page-school').innerHTML=`<div class="grid">${card('Add an assignment or work task',`<form class="formrow" onsubmit="addSimple(event,'school',['schoolName','schoolDue','schoolType'])"><inpu t class="field" id="schoolName" placeholder="Assignment, project, or task" required><input class="field" id="schoolDue" type="date"><select class="field" id="schoolType"><option>School</option><option>Work</option><option>Study</option><option>Project</option></select><button class="btn primary">Add</button></form>`,'span-5')}${card('Your planner',simpleList('school'),'span-7')}</div>`} 
+
+function simpleList(k){return `<div class="list">${data[k].map(x=>`<div class="item ${x.done?'done':''}"><input type="checkbox" ${x.done?'checked':''} onchange="toggleSimple('${k}','${x.id}')"><div class="grow"><div class="item-text"><b>${esc(x.name)}</b></div><div class="small">${esc(x.type||x.when||x.date||x.due||'')}</div></div><button class="iconbtn" onclick="removeItem('${k}','${x.id}')">×</button></div>`).join('')||empty('Nothing here yet. Add your first item above.')}</div>`}function addSimple(e,k,ids){e.preventDefault();let vals=ids.map(x=>document.getElementById(x).value);let x={id:id(),name:vals[0],done:false};if(k==='meals'){x.type=vals[1];x.date=vals[2]}if(k==='chores')x.when=vals[1];if(k==='goals')x.due=vals[1];if(k==='school'){x.due=vals[1];x.type=vals[2]}data[k].push(x);save();render()};function toggleSimple(k,i){let x=data[k].find(x=>x.id===i);x.done=!x.done;save();render()} 
+
+function renderSettings(){let s=data.settings;document.getElementById('page-settings').innerHTML=`<div class="grid">${card('Appearance',`<div class="item"><div class="grow"><b>Color theme</b><div class="small">Choose the atmosphere for your workspace.</div></div><select class="field" style="max-width:150px" onchange="data.settings.theme=this.value;save();applyTheme()"><option value="light" ${s.theme==='light'?'selected':''}>Warm light</option><option value="dark" ${s.theme==='dark'?'selected':''}>Evening dark</option></select></div><div class="item"><div class="grow"><b>Accent color</b><div class="small">A subtle detail throughout LifeHub.</div></div><input type="color" value="${s.accent||'#b59662'}" onchange="data.settings.accent=this.value;save();applyTheme()"></div><div class="item"><div class="grow"><b>Heading style</b><div class="small">Classic serif or clean modern.</div></div><select class="field" style="max-width:150px" onchange="data.settings.font=this.value;save();applyTheme()"><option value="classic">Elegant</option><option value="modern">Modern</option></select></div>`,'span-6')}${card('Dashboard cards',`<p class="small">Choose which quick stats you want on your overview.</p>${['tasks','events','money','habits'].map(k=>`<label class="item"><input type="checkbox" ${s.cards.includes(k)?'checked':''} onchange="toggleCard('${k}')"><span>${k[0].toUpperCase()+k.slice(1)}</span></label>`).join('')}`,'span-6')}${card('Create your own section',`<form class="formrow" onsubmit="addCustom(event)"><input class="field" id="customName" placeholder="Your section name" required><button class="btn primary">Create section</button></form><div class="list">${data.customSections.map(x=>`<div class="item"><b>${esc(x.name)}</b><button class="iconbtn" onclick="removeItem('customSections','${x.id}')">×</button></div>`).join('')||empty('Your custom sections will appear here.')}</div>`,'span-6')}${card('Your data & privacy',`<p class="small" style="line-height:1.8">LifeHub saves information in this browser using local storage. It is not currently synced to an account or cloud, and it does not connect to your bank. Clearing browser data may erase your information. For important records, keep your own backup.</p><button class="btn" onclick="exportData()">Export my LifeHub data</button> <button class="btn" onclick="importData()">Import backup</button><input type="file" id="importFile" accept="application/json" class="hidden" onchange="readImport(event)">`,'span-6')}</div>`} 
+
+function applyTheme(){document.body.classList.toggle('theme-dark',data.settings.theme==='dark');document.documentElement.style.setProperty('--gold',data.settings.accent||'#b59662');document.documentElement.style.setProperty('--serif',data.settings.font==='modern'?'DM Sans,Arial,sans-serif':"'Playfair Display',Georgia,serif")}function toggleCard(k){let a=data.settings.cards;a.includes(k)?data.settings.cards=a.filter(x=>x!==k):a.push(k);save();renderSettings()}function addCustom(e){e.preventDefault();data.customSections.push({id:id(),name:customName.value});save();renderSettings();toast('Custom section created')} 
+
+function removeItem(k,i){data[k]=data[k].filter(x=>x.id!==i);save();render();toast('Removed')}function exportData(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='lifehub-backup.json';a.click();URL.revokeObjectURL(a.href)}function importData(){document.getElementById('importFile').click()}function readImport(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let v=JSON.parse(r.result);Object.keys(defaults).forEach(k=>{if(k in v)data[k]=v[k]});save();render();toast('Backup imported')}catch{toast('That backup could not be read')}};r.readAsText(f)} 
+
+document.getElementById('globalSearch').addEventListener('input',e=>{let q=e.target.value.trim().toLowerCase();if(!q)return;let matches=[];for(let [k,label] of [['tasks','To-do'],['events','Schedule'],['expenses','Expenses'],['shoppingLists','Shopping'],['habits','Habits'],['notesList','Notes'],['meals','Meals'],['chores','Home'],['goals','Goals'],['wellness','Wellness'],['school','School & Work']]){let arr=data[k]||[];arr.forEach(x=>{let s=JSON.stringify(x).toLowerCase();if(s.includes(q))matches.push(label+': '+(x.text||x.name||x.title||x.mood||'Item'))})}if(e.key==='Enter')alert(matches.slice(0,15).join('\n')||'No matches found.')}); 
+
+load();nav();shell();applyTheme();render();showPage('overview');document.getElementById('dateLine').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}).toUpperCase(); 
+
+</script></body></html> <!DOCTYPE html> 
+
+<html lang="en"> 
+
+<head> 
+
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f6f2eb"><title>LifeHub — Your life. Organized.</title> 
+
+<style> 
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap'); 
+
+:root{--bg:#f6f2eb;--panel:#fffdf9;--panel2:#f0e9de;--ink:#302c27;--muted:#898176;--line:#e8e0d5;--gold:#b59662;--gold2:#e9ddc8;--green:#788675;--red:#b87568;--shadow:0 10px 30px #4537210c;--serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',Arial,sans-serif} 
+
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px}button,input,select,textarea{font:inherit}button{cursor:pointer}.app{min-height:100vh;display:grid;grid-template-columns:248px 1fr}.sidebar{background:var(--panel);border-right:1px solid var(--line);padding:26px 16px;position:sticky;top:0;height:100vh;overflow:auto}.brand{padding:4px 12px 28px}.brand-name{font:600 30px var(--serif);letter-spacing:-1px}.brand-name span{color:var(--gold)}.tagline{font-size:9px;letter-spacing:2.3px;color:var(--muted);margin-top:4px}.nav-label{font-size:9px;font-weight:700;letter-spacing:1.8px;color:#aaa094;padding:14px 12px 8px}.nav{display:grid;gap:4px}.nav button{border:0;background:transparent;color:#766f65;text-align:left;padding:11px 12px;border-radius:10px;display:flex;gap:12px;align-items:center;font-size:13px}.nav button:hover,.nav button.active{background:var(--panel2);color:var(--ink)}.nav button.active{font-weight:700}.nav .ico{width:18px;text-align:center;color:var(--gold)}.side-bottom{margin-top:28px;border-top:1px solid var(--line);padding-top:14px}.main{min-width:0;padding:30px clamp(18px,4vw,54px) 70px;max-width:1600px;width:100%;margin:auto}.topbar{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:30px}.eyebrow{font-size:10px;letter-spacing:1.7px;color:var(--gold);font-weight:700;text-transform:uppercase}.page-title{font:600 clamp(27px,3vw,36px) var(--serif);margin:5px 0}.sub{color:var(--muted);font-size:13px}.top-actions{display:flex;gap:9px;align-items:center}.search{width:min(240px,28vw);background:var(--panel);border:1px solid var(--line);padding:10px 13px;border-radius:10px;outline:none}.btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:10px 14px;border-radius:9px;font-size:12px}.btn.primary{background:var(--ink);border-color:var(--ink);color:#fff}.btn.gold{background:var(--gold);border-color:var(--gold);color:white}.btn:hover{filter:brightness(.97)}.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:19px;box-shadow:var(--shadow);min-width:0}.span-12{grid-column:span 12}.span-8{grid-column:span 8}.span-7{grid-column:span 7}.span-6{grid-column:span 6}.span-5{grid-column:span 5}.span-4{grid-column:span 4}.span-3{grid-column:span 3}.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}.card-title{font:600 17px var(--serif)}.muted{color:var(--muted)}.stat{font:600 30px var(--serif);margin:8px 0 3px}.stat-label{font-size:11px;color:var(--muted)}.welcome{background:linear-gradient(115deg,#eee5d7,#faf7f1 72%);border:1px solid #e8ddcb;padding:27px 28px;position:relative;overflow:hidden}.welcome:after{content:'✧';position:absolute;right:32px;top:5px;font:100px var(--serif);color:#c4aa7a55}.welcome h2{font:600 26px var(--serif);margin:8px 0}.welcome p{color:#7f7669;margin:0;max-width:490px;line-height:1.7}.welcome .eyebrow{color:#9b8052}.formrow{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.field{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 11px;min-width:0;flex:1;color:var(--ink);outline:none}.field:focus,.search:focus,textarea:focus{border-color:var(--gold)}textarea.field{width:100%;min-height:110px;resize:vertical}.list{display:grid;gap:8px}.item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f0ebe4}.item:last-child{border:0}.item .grow{flex:1;min-width:0}.item.done .item-text{text-decoration:line-through;color:#aaa}.item-text{overflow-wrap:anywhere}.small{font-size:11px;color:var(--muted)}.tag{font-size:10px;padding:4px 7px;border-radius:20px;background:var(--panel2);color:#82745e}.iconbtn{border:0;background:transparent;color:#9b9285;padding:5px}.iconbtn:hover{color:var(--red)}.empty{padding:22px;text-align:center;color:#a49b8f;font-size:12px}.progress{height:7px;border-radius:9px;background:#eee8df;overflow:hidden}.progress>i{display:block;height:100%;background:var(--green);border-radius:9px}.section{display:none}.section.active{display:block}.section-intro{margin:-17px 0 22px;color:var(--muted)}.pillrow{display:flex;gap:7px;flex-wrap:wrap}.pill{border:1px solid var(--line);background:var(--panel);padding:7px 11px;border-radius:30px;color:var(--muted);font-size:11px}.pill.active{background:var(--gold2);color:#6f5b3d;border-color:#dfcfb5}.table{width:100%;border-collapse:collapse}.table th,.table td{text-align:left;padding:10px 7px;border-bottom:1px solid var(--line);font-size:12px}.table th{color:var(--muted);font-weight:600}.big-note{font:500 21px var(--serif);line-height:1.5;color:#665d50}.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.day{min-height:83px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px;font-size:11px}.day .num{color:var(--muted)}.day.today{border-color:var(--gold);background:#fbf7ef}.day .event-dot{display:block;background:var(--gold2);padding:3px 4px;border-radius:4px;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px}.weekdays{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:6px;color:var(--muted);font-size:10px;text-align:center}.note-card{cursor:pointer}.note-card:hover{border-color:#cdbb9c}.hidden{display:none!important}.mobile-head{display:none}.modal-back{position:fixed;inset:0;background:#2e292355;display:none;align-items:center;justify-content:center;padding:20px;z-index:20}.modal-back.open{display:flex}.modal{background:var(--panel);border-radius:16px;padding:24px;width:min(460px,100%);box-shadow:0 20px 70px #0002}.modal h3{font:600 22px var(--serif);margin:0 0 16px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}.toast{position:fixed;bottom:22px;right:22px;background:var(--ink);color:white;padding:12px 16px;border-radius:9px;font-size:12px;opacity:0;transform:translateY(8px);transition:.2s;z-index:30}.toast.show{opacity:1;transform:none}.bottomnav{display:none}.theme-dark{--bg:#24231f;--panel:#302e29;--panel2:#3b3831;--ink:#f0e9dd;--muted:#aaa193;--line:#48443c;--gold:#c5a875;--gold2:#4a4132;--shadow:0 10px 30px #0002}.theme-dark .field,.theme-dark .search,.theme-dark .day{background:#292722;color:var(--ink)}.theme-dark .welcome{background:l inear-gradient(115deg,#40392e,#302e29);border-color:#5a4c37}.theme-dark .welcome p{color:#c2b8a8} 
+
+@media(max-width:900px){.app{grid-template-columns:205px 1fr}.sidebar{padding:20px 10px}.main{padding:24px 20px 50px}.span-3{grid-column:span 6}} 
+
+@media(max-width:650px){.app{display:block}.sidebar{display:none}.main{padding:20px 15px 90px}.topbar{align-items:flex-start}.top-actions .search{width:130px}.top-actions .btn{display:none}.grid{gap:11px}.span-8,.span-7,.span-6,.span-5,.span-4{grid-column:span 12}.span-3{grid-column:span 6}.card{padding:15px}.welcome{padding:21px}.welcome:after{right:12px}.bottomnav{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--panel);border-top:1px solid var(--line);z-index:10;justify-content:space-around;padding:8px 4px calc(8px + env(safe-area-inset-bottom))}.bottomnav button{border:0;background:none;color:var(--muted);font-size:9px;display:grid;gap:3px;justify-items:center;padding:4px}.bottomnav button.active{color:var(--gold)}.bottomnav span{font-size:17px}.day{min-height:64px;padding:4px}.day .event-dot{font-size:8px}.mobile-head{display:block}.page-title{font-size:29px}.search{font-size:11px}} 
+
+</style></head> 
+
+<body><div class="app"><aside class="sidebar"><div class="brand"><div class="brand-name">lifehub<span>.</span></div><div class="tagline">YOUR LIFE. ORGANIZED.</div></div><div class="nav-label">WORKSPACE</div><nav class="nav" id="sideNav"></nav><div class="side-bottom"><div class="nav-label">PERSONALIZE</div><nav class="nav"><button data-page="settings"><span class="ico">⚙</span>Settings</button></nav><p class="small" style="padding:10px 12px;line-height:1.6">A little more clarity, every day.</p></div></aside><main class="main"><header class="topbar"><div><div class="eyebrow" id="dateLine">YOUR PERSONAL SPACE</div><h1 class="page-title" id="pageTitle">Overview</h1><div class="sub" id="pageSub">A calmer way to keep everything together.</div></div><div class="top-actions"><input class="search" id="globalSearch" placeholder="⌕  Search LifeHub..."><button class="btn" onclick="showPage('settings')">⚙</button></div></header><div id="pages"></div></main></div><nav class="bottomnav" id="bottomNav"></nav><div class="modal-back" id="modalBack"><div class="modal" id="modal"></div></div><div class="toast" id="toast"></div> 
+
+<script> 
+
+const pages=[['overview','Overview','⌂'],['tasks','To-do List','✓'],['calendar','Schedule','▦'],['money','My Money','$'],['shopping','Shopping','▤'],['habits','Habits','✧'],['notes','Quick Notes','▧'],['meals','Meal Planner','♧'],['home','Home & Cleaning','⌂'],['goals','Goals & Vision','◎'],['wellness','Self-care','♡'],['school','School & Work','▤'],['settings','Settings','⚙']]; 
+
+const oldKeys={tasks:'lifehub_tasks',events:'lifehub_events',expenses:'lifehub_expenses',shopping:'lifehub_shopping',habits:'lifehub_habits',budget:'lifehub_budget',notes:'lifehub_notes'}; 
+
+const defaults={tasks:[],events:[],expenses:[],income:[],shoppingLists:[{id:'main',name:'My Shopping List',items:[]}],habits:[],notesList:[],meals:[],chores:[],goals:[],wellness:[],school:[],bills:[],customSections:[],settings:{theme:'light',accent:'#b59662',font:'classic',cards:['tasks','events','money','habits']},budget:0}; 
+
+let data={};function load(){Object.keys(defaults).forEach(k=>{try{let v=localStorage.getItem('lh_'+k);data[k]=v?JSON.parse(v):structuredClone(defaults[k])}catch{data[k]=structuredClone(defaults[k])}});try{let v=localStorage.getItem(oldKeys.tasks);if(!data.tasks.length&&v)data.tasks=JSON.parse(v).map(x=>typeof x==='string'?{id:id(),text:x,done:false,priority:'Normal',category:'Personal',due:''}:({...x,id:x.id||id(),priority:x.priority||'Normal',category:x.category||'Personal',due:x.due||''}));}catch{};try{let v=localStorage.getItem(oldKeys.events);if(!data.events.length&&v)data.events=JSON.parse(v).map(x=>({...x,id:id()}))}catch{};try{let v=localStorage.getItem(oldKeys.expenses);if(!data.expenses.length&&v)data.expenses=JSON.parse(v).map(x=>({...x,id:id(),date:today()}))}catch{};try{let v=localStorage.getItem(oldKeys.shopping);if(v&&data.shoppingLists[0].items.length===0)data.shoppingLists[0].items=JSON.parse(v).map(x=>typeof x==='string'?{id:id(),text:x,done:false}:({...x,id:x.id||id()}))}catch{};try{let v=localStorage.getItem(oldKeys.habits);if(!data.habits.length&&v)data.habits=JSON.parse(v).map(x=>({...x,id:id()}))}catch{};try{let v=localStorage.getItem(oldKeys.notes);if(v&&!data.notesList.length&&v.trim())data.notesList=[{id:id(),title:'My notes',body:v,folder:'Personal',pinned:true,updated:today()}]}catch{};try{let v=localStorage.getItem(oldKeys.budget);if(!data.budget&&v)data.budget=Number(v)||0}catch{} } 
+
+function save(){Object.keys(data).forEach(k=>localStorage.setItem('lh_'+k,JSON.stringify(data[k])));localStorage.setItem(oldKeys.tasks,JSON.stringify(data.tasks));localStorage.setItem(oldKeys.events,JSON.stringify(data.events));localStorage.setItem(oldKeys.expenses,JSON.stringify(data.expenses));localStorage.setItem(oldKeys.shopping,JSON.stringify(data.shoppingLists[0]?.items||[]));localStorage.setItem(oldKeys.habits,JSON.stringify(data.habits));localStorage.setItem(oldKeys.notes,data.notesList[0]?.body||'');localStorage.setItem(oldKeys.budget,String(data.budget||0))} 
+
+function id(){return Math.random().toString(36).slice(2,10)}function today(){return new Date().toISOString().slice(0,10)}function money(n){return '$'+(Number(n)||0).toFixed(2)}function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function toast(s){let t=document.getElementById('toast');t.textContent=s;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}function field(ph,type='text',extra=''){return `<input class="field" placeholder="${ph}" type="${type}" ${extra}>`}function empty(s){return `<div class="empty">${s}</div>`}function card(title,body,span='span-6',extra=''){return `<section class="card ${span}" ${extra}><div class="card-head"><div class="card-title">${title}</div></div>${body}</section>`}function showPage(p){current=p;document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id==='page-'+p));document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===p));let info=pages.find(x=>x[0]===p);document.getElementById('pageTitle').textContent=info?.[1]||p;document.getElementById('pageSub').textContent=({overview:'A calmer way to keep everything together.',tasks:'Make space for what matters today.',calendar:'Your time, thoughtfully organized.',money:'A clearer picture of your money.',shopping:'Keep every list in one place.',habits:'Small steps become meaningful progress.',notes:'A home for all the things on your mind.',meals:'Plan meals and keep favorite recipes close.',home:'Make home feel a little more manageable.',goals:'Give your ideas a place to grow.',wellness:'Make room for taking care of yourself.',school:'Stay on top of classes, projects, and work.',settings:'Make LifeHub feel like yours.'})[p]||'Your personal workspace.';window.scrollTo(0,0)}let current='overview'; function nav(){let main=pages.filter(p=>p[0]!=='settings');document.getElementById('sideNav').innerHTML=main.map(p=>`<button data-page="${p[0]}" onclick="showPage('${p[0]}')"><span class="ico">${p[2]}</span>${p[1]}</button>`).join('');document.getElementById('bottomNav').innerHTML=[pages[0],pages[1],pages[2],pages[3],pages[6]].map(p=>`<button data-page="${p[0]}" onclick="showPage('${p[0]}')"><span>${p[2]}</span>${p[1]}</button>`).join('')} 
+
+function shell(){document.getElementById('pages').innerHTML=pages.map(p=>`<div class="section ${p[0]==='overview'?'active':''}" id="page-${p[0]}"></div>`).join('');} 
+
+function render(){renderOverview();renderTasks();renderCalendar();renderMoney();renderShopping();renderHabits();renderNotes();renderMeals();renderHome();renderGoals();renderWellness();renderSchool();renderSettings();} 
+
+function renderOverview(){let done=data.tasks.filter(x=>x.done).length,open=data.tasks.filter(x=>!x.done).length,spent=data.expenses.reduce((a,x)=>a+Number(x.amount||0),0),up=data.events.filter(x=>x.date>=today()).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,4);let quote=['Small steps, taken consistently, create beautiful change.','You do not have to do everything today. Just begin.','A little progress is still progress.','Make room for the life you want to live.'][new Date().getDate()%4];let html=`<div class="grid"><section class="card span-12 welcome"><div class="eyebrow">A FRESH START, EVERY DAY</div><h2>Welcome to your LifeHub.</h2><p>Your life has many moving parts. This is your space to bring them together, find your focus, and make today feel a little lighter.</p><p class="big-note" style="font-size:15px;margin-top:14px">“${quote}”</p></section>`; 
+
+[['To-do',''+open,'tasks','Open tasks'],['Upcoming',''+up.length,'calendar','Events ahead'],['Spent this month',money(spent),'money','Recorded expenses'],['Habits',''+data.habits.length,'habits','Habits you are building']].forEach(x=>html+=`<section class="card span-3"><div class="stat-label">${x[0]}</div><div class="stat">${x[1]}</div><div class="stat-label">${x[3]}</div><button class="iconbtn" onclick="showPage('${x[2]}')">View section →</button></section>`); 
+
+let taskHtml=data.tasks.filter(x=>!x.done).slice(0,5).map(t=>`<div class="item"><input type="checkbox" onchange="toggleTask('${t.id}')"><div class="grow"><div class="item-text">${esc(t.text)}</div><div class="small">${esc(t.category||'Personal')} · ${esc(t.due||'No due date')}</div></div><span class="tag">${esc(t.priority||'Normal')}</span></div>`).join('')||empty('Nothing waiting on you. Add a task when you are ready.');let eventHtml=up.map(e=>`<div class="item"><div class="tag">${esc(e.date)}</div><div class="grow"><div>${esc(e.name)}</div><div class="small">${esc(e.time||'')}</div></div></div>`).join('')||empty('Your upcoming schedule will appear here.');html+=card('A little focus for today',taskHtml+'<button class="btn" onclick="showPage(\'tasks\')">Open to-do list</button>','span-6')+card('Coming up',eventHtml+'<button class="btn" onclick="showPage(\'calendar\')">Open calendar</button>','span-6');html+='</div>';document.getElementById('page-overview').innerHTML=html} 
+
+function renderTasks(){let arr=data.tasks;document.getElementById('page-tasks').innerHTML=`<div class="card"><div class="card-head"><div class="card-title">Capture a task</div><span class="small">${arr.filter(x=>!x.done).length} remaining</span></div><form class="formrow" onsubmit="addTask(event)"><input class="field" id="taskText" placeholder="What needs to get done?" required><select class="field" id="taskPriority"><option>Normal</option><option>High</option><option>Low</option></select><input class="field" id="taskDue" type="date"><select class="field" id="taskCategory"><option>Personal</option><option>School</option><option>Work</option><option>Home</option><option>Errands</option></select><button class="btn primary">Add task +</button></form><div class="pillrow"><button class="pill active" onclick="taskFilter='all';renderTasks()">All</button><button class="pill" onclick="taskFilter='open';renderTasks()">To do</button><button class="pill" onclick="taskFilter='done';renderTasks()">Completed</button></div><div class="list" style="margin-top:12px">${arr.filter(x=>taskFilter==='all'||(taskFilter==='open'?!x.done:x.done)).map(t=>`<div class="item ${t.done?'done':''}"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask('${t.id}')"><div class="grow"><div class="item-text">${esc(t.text)}</div><div class="small">${esc(t.category||'Personal')} · ${t.due?'Due '+esc(t.due):'No due date'}</div></div><span class="tag">${esc(t.priority||'Normal')}</span><button class="iconbtn" onclick="editTask('${t.id}')">✎</button><button class="iconbtn" onclick="removeItem('tasks','${t.id}')">×</button></div>`).join('')||empty('Your list is clear. Add your first task above.')}</div></div>`} 
+
+let taskFilter='all';function addTask(e){e.preventDefault();data.tasks.unshift({id:id(),text:document.getElementById('taskText').value,priority:document.getElementById('taskPriority').value,due:document.getElementById('taskDue').value,category:document.getElementById('taskCategory').value,done:false,created:today()});save();render();toast('Task added')};function toggleTask(i){let t=data.tasks.find(x=>x.id===i);if(t)t.done=!t.done;save();render()};function editTask(i){let t=data.tasks.find(x=>x.id===i);if(!t)return;let v=prompt('Edit task',t.text);if(v!==null){t.text=v;save();render()}} 
+
+function renderCalendar(){let now=new Date(),y=now.getFullYear(),m=now.getMonth(),first=new Date(y,m,1),start=(first.getDay()),days=new Date(y,m+1,0).getDate();let cells='';for(let i=0;i<start;i++)cells+='<div></div>';for(let d=1;d<=days;d++){let date=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`,ev=data.events.filter(e=>e.date===date);cells+=`<div class="day ${date===today()?'today':''}"><div class="num">${d}</div>${ev.map(e=>`<span class="event-dot" title="${esc(e.name)}">${esc(e.name)}</span>`).join('')}</div>`}document.getElementById('page-calendar').innerHTML=`<div class="grid">${card('Add to your schedule',`<form class="formrow" onsubmit="addEvent(event)"><input class="field" id="eventName" placeholder="Event name" required><input class="field" id="eventDate" type="date" required><input class="field" id="eventTime" type="time"><button class="btn primary">Add event +</button></form><div class="list">${data.events.slice().sort((a,b)=>(a.date||'').localeCompare(b.date||'')).map(e=>`<div class="item"><div class="grow"><b>${esc(e.name)}</b><div class="small">${esc(e.date)} ${esc(e.time||'')}</div></div><button class="iconbtn" onclick="removeItem('events','${e.id}')">×</button></div>`).join('')||empty('No events added yet.')}</div>`,'span-5')}<section class="card span-7"><div class="card-head"><div class="card-title">${now.toLocaleString('en',{month:'long',year:'numeric'})}</div><span class="tag">Monthly view</span></div> <div><div class="weekdays">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(x=>`<div>${x}</div>`).join('')}</div><div class="calendar-grid">${cells}</div></section></div>`} 
+
+function addEvent(e){e.preventDefault();data.events.push({id:id(),name:eventName.value,date:eventDate.value,time:eventTime.value});save();render();toast('Event added')} 
+
+function renderMoney(){let spent=data.expenses.reduce((a,x)=>a+Number(x.amount||0),0),income=data.income.reduce((a,x)=>a+Number(x.amount||0),0),remain=Number(data.budget||0)-spent;document.getElementById('page-money').innerHTML=`<div class="grid">${card('Monthly budget',`<form class="formrow" onsubmit="setBudget(event)"><input class="field" id="budgetInput" type="number" min="0" step="0.01" value="${Number(data.budget)||''}" placeholder="Set your monthly budget"><button class="btn primary">Save budget</button></form><div class="stat">${money(remain)}</div><div class="stat-label">Estimated budget remaining · ${money(data.budget||0)} budget</div><div class="progress" style="margin-top:12px"><i style="width:${Math.min(100,data.budget?spent/data.budget*100:0)}%"></i></div>`,'span-6')}${card('At a glance',`<div class="item"><div class="grow">Income recorded</div><b>${money(income)}</b></div><div class="item"><div class="grow">Expenses recorded</div><b>${money(spent)}</b></div><div class="item"><div class="grow">Net recorded</div><b>${money(income-spent)}</b></div>`,'span-6')}${card('Add income or expense',`<form class="formrow" onsubmit="addMoney(event)"><input class="field" id="moneyName" placeholder="Description" required><input class="field" id="moneyAmount" type="number" min="0" step="0.01" placeholder="Amount" required><select class="field" id="moneyType"><option value="expense">Expense</option><option value="income">Income</option></select><button class="btn primary">Add entry</button></form><div class="list">${[...data.expenses.map(x=>({...x,type:'Expense'})),...data.income.map(x=>({...x,type:'Income'}))].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).map(x=>`<div class="item"><div class="grow"><b>${esc(x.name)}</b><div class="small">${x.type} · ${esc(x.date||'')}</div></div><b>${money(x.amount)}</b><button class="iconbtn" onclick="removeMoney('${x.id}','${x.type}')">×</button></div>`).join('')||empty('Your entries will appear here.')}</div>`,'span-7')}${card('Bills & savings goals',`<form class="formrow" onsubmit="addBill(event)"><input class="field" id="billName" placeholder="Bill or savings goal" required><input class="field" id="billAmount" type="number" min="0" step=".01" placeholder="Amount"><input class="field" id="billDue" type="date"><button class="btn">Add</button></form>${data.bills.map(b=>`<div class="item"><div class="grow">${esc(b.name)}<div class="small">${esc(b.due||'')}</div></div>${money(b.amount)}<button class="iconbtn" onclick="removeItem('bills','${b.id}')">×</button></div>`).join('')||empty('Add bills or savings targets to keep them visible.')}`,'span-5')}</div>`} 
+
+function setBudget(e){e.preventDefault();data.budget=Number(budgetInput.value);save();render();toast('Budget saved')}function addMoney(e){e.preventDefault();let x={id:id(),name:moneyName.value,amount:Number(moneyAmount.value),date:today()};(moneyType.value==='income'?data.income:data.expenses).unshift(x);save();render();toast('Entry saved')}function removeMoney(i,t){data[t==='Income'?'income':'expenses']=data[t==='Income'?'income':'expenses'].filter(x=>x.id!==i);save();render()}function addBill(e){e.preventDefault();data.bills.push({id:id(),name:billName.value,amount:Number(billAmount.value||0),due:billDue.value});save();render()} 
+
+function renderShopping(){let list=data.shoppingLists[0]||{id:'main',name:'My Shopping List',items:[]};document.getElementById('page-shopping').innerHTML=`<div class="grid">${card('Your lists',`<form class="formrow" onsubmit="newShopList(event)"><input class="field" id="shopListName" placeholder="Create another list" required><button class="btn">+ New list</button></form><div class="list">${data.shoppingLists.map(l=>`<div class="item"><div class="grow"><b>${esc(l.name)}</b><div class="small">${l.items.filter(x=>x.done).length}/${l.items.length} purchased</div></div><button class="iconbtn" onclick="selectShop('${l.id}')">Open</button></div>`).join('')}</div>`,'span-4')}${card(esc(list.name),`<form class="formrow" onsubmit="addShopItem(event)"><input class="field" id="shopItem" placeholder="Item to buy" required><input class="field" id="shopPrice" type="number" min="0" step=".01" placeholder="Price"><input class="field" id="shopStore" placeholder="Store"><select class="field" id="shopCategory"><option>General</option><option>Groceries</option><option>Personal</option><option>Clothing</option><option>Home</option><option>School</option></select><button class="btn primary">Add item</button></form><div class="list">${list.items.map(x=>`<div class="item ${x.done?'done':''}"><input type="checkbox" ${x.done?'checked':''} onchange="toggleShop('${x.id}')"><div class="grow"><div class="item-text">${esc(x.text)}</div><div class="small">${esc(x.category||'General')} · ${esc(x.store||'No store')}</div></div><b>${money(x.price)}</b><button class="iconbtn" onclick="removeShop('${x.id}')">×</button></div>`).join('')||empty('Your shopping list is ready for its first item.')}</div><div class="item"><div class="grow"><b>Estimated total</b></div><b>${money(list.items.reduce((a,x)=>a+Number(x.price||0),0))}</b></div>`,'span-8')}</div>`} 
+
+let activeShop='main';function selectShop(i){activeShop=i;let l=data.shoppingLists.find(x=>x.id===i);if(l){let idx=data.shoppingLists.indexOf(l);[data.shoppingLists[0],data.shoppingLists[idx]]=[data.shoppingLists[idx],data.shoppingLists[0]];save();renderShopping()}}function newShopList(e){e.preventDefault();data.shoppingLists.push({id:id(),name:shopListName.value,items:[]});save();renderShopping()}function addShopItem(e){e.preventDefault();data.shoppingLists[0].items.push({id:id(),text:shopItem.value,price:Number(shopPrice.value||0),store:shopStore.value,category:shopCategory.value,done:false});save();renderShopping()}function toggleShop(i){let x=data.shoppingLists[0].items.find(x=>x.id===i);if(x)x.done=!x.done;save();renderShopping()}function removeShop(i){data.shoppingLists[0].items=data.shoppingLists[0].items.filter(x=>x.id!==i);save();renderShopping()} 
+
+function renderHabits(){document.getElementById('page-habits').innerHTML=`<div class="grid">${card('Build a habit',`<form class="formrow" onsubmit="addHabit(event)"><input class="field" id="habitName" placeholder="A habit you want to build" required><select class="field" id="habitCategory"><option>Wellness</option><option>Personal</option><option>School</option><option>Home</option><option>Fitness</option></select><button class="btn primary">Add habit</button></form><div class="list">${data.habits.map(h=>{let count=(h.dates||[]).length,done=(h.dates||[]).includes(today());return `<div class="item"><input type="checkbox" ${done?'checked':''} onchange="mark Habit('${h.id}')"><div class="grow"><b>${esc(h.name||h.text)}</b><div class="small">${esc(h.category||'Personal')} · ${count} check-ins · ${count?count+' day streak total':'Start today'}</div></div><span class="tag">${done?'Done today':'Today'}</span><button class="iconbtn" onclick="removeItem('habits','${h.id}')">×</button></div>`}).join('')||empty('Add a habit you would like to practice consistently.')}</div>`,'span-7')}${card('Your consistency',`<div class="stat">${data.habits.filter(h=>(h.dates||[]).includes(today())).length}/${data.habits.length}</div><div class="stat-label">Habits checked off today</div><div class="progress" style="margin-top:14px"><i style="width:${data.habits.length?data.habits.filter(h=>(h.dates||[]).includes(today())).length/data.habits.length*100:0}%"></i></div><p class="small" style="line-height:1.7">Consistency is personal. Focus on showing up, not being perfect.</p>`,'span-5')}</div>`}function addHabit(e){e.preventDefault();data.habits.push({id:id(),name:habitName.value,category:habitCategory.value,dates:[]});save();render()}function markHabit(i){let h=data.habits.find(x=>x.id===i);if(!h.dates)h.dates=[];h.dates=h.dates.includes(today())?h.dates.filter(x=>x!==today()):[...h.dates,today()];save();render()} 
+
+function renderNotes(){document.getElementById('page-notes').innerHTML=`<div class="grid">${card('Create a note',`<form onsubmit="addNote(event)"><input class="field" id="noteTitle" placeholder="Note title" required style="width:100%;margin-bottom:8px"><input class="field" id="noteFolder" placeholder="Folder (e.g. Personal, Ideas)" style="width:100%;margin-bottom:8px"><textarea class="field" id="noteBody" placeholder="Write anything you want to remember..."></textarea><button class="btn primary" style="margin-top:9px">Save note</button></form>`,'span-5')}${card('Your notes',`<input class="field" id="noteSearch" placeholder="Search notes..." oninput="filterNotes(this.value)" style="width:100%;margin-bottom:12px"><div class="grid" id="noteList">${noteCards(data.notesList)}</div>`,'span-7')}</div>`}function noteCards(a){return a.slice().sort((x,y)=>Number(y.pinned)-Number(x.pinned)).map(n=>`<div class="card note-card span-12"><div class="card-head"><b>${esc(n.title)}</b><span><button class="iconbtn" onclick="pinNote('${n.id}')">${n.pinned?'★':'☆'}</button><button class="iconbtn" onclick="editNote('${n.id}')">✎</button><button class="iconbtn" onclick="removeItem('notesList','${n.id}')">×</button></span></div><div class="small">${esc(n.folder||'Personal')} · ${esc(n.updated||'')}</div><p>${esc((n.body||'').slice(0,180))}</p></div>`).join('')||empty('Your saved notes will live here.')}function addNote(e){e.preventDefault();data.notesList.unshift({id:id(),title:noteTitle.value,folder:noteFolder.value||'Personal',body:noteBody.value,pinned:false,updated:today()});save();renderNotes();toast('Note saved')}function filterNotes(q){document.getElementById('noteList').innerHTML=noteCards(data.notesList.filter(n=>(n.title+n.body+n.folder).toLowerCase().includes(q.toLowerCase())))}function editNote(i){let n=data.notesList.find(x=>x.id===i);if(!n)return;let t=prompt('Edit note title',n.title);if(t===null)return;let b=prompt('Edit note text',n.body);if(b!==null){n.title=t;n.body=b;n.updated=today();save();renderNotes()}}function pinNote(i){let n=data.notesList.find(x=>x.id===i);n.pinned=!n.pinned;save();renderNotes()} 
+
+function renderMeals(){document.getElementById('page-meals').innerHTML=`<div class="grid">${card('Add a meal or recipe',`<form class="formrow" onsubmit="addSimple(event,'meals',['mealName','mealType','mealDay'])"><input class="field" id="mealName" placeholder="Meal or recipe name" required><select class="field" id="mealType"><option>Breakfast</option><option>Lunch</option><option>Dinner</option><option>Snack</option><option>Recipe idea</option></select><input class="field" id="mealDay" type="date"><button class="btn primary">Add</button></form>`,'span-5')}${card('Meal plan & recipe ideas',simpleList('meals'),'span-7')}</div>`} 
+
+function renderHome(){document.getElementById('page-home').innerHTML=`<div class="grid">${card('Add a home task',`<form class="formrow" onsubmit="addSimple(event,'chores',['choreName','choreWhen'])"><input class="field" id="choreName" placeholder="What needs doing?" required><select class="field" id="choreWhen"><option>Daily</option><option>Weekly</option><option>Monthly</option><option>One-time</option></select><button class="btn primary">Add task</button></form>`,'span-5')}${card('Cleaning & home checklist',simpleList('chores'),'span-7')}</div>`} 
+
+function renderGoals(){document.getElementById('page-goals').innerHTML=`<div class="grid">${card('Add a goal',`<form class="formrow" onsubmit="addSimple(event,'goals',['goalName','goalDate'])"><input class="field" id="goalName" placeholder="What would you like to work toward?" required><input class="field" id="goalDate" type="date"><button class="btn primary">Add goal</button></form><p class="small">Break big dreams into small, achievable steps.</p>`,'span-5')}${card('Your goals',simpleList('goals'),'span-7')}<section class="card span-12"><div class="card-title">Vision board</div><textarea class="field" id="visionText" placeholder="Describe the life you are working toward: places, experiences, skills, dreams, and how you want your days to feel..." oninput="data.vision=this.value;save()">${esc(data.vision||'')}</textarea><div class="small">Your vision is saved automatically in this browser.</div></section></div>`} 
+
+function renderWellness(){document.getElementById('page-wellness').innerHTML=`<div class="grid">${card('A gentle check-in',`<form class="formrow" onsubmit="addWellness(event)"><input class="field" id="wellDate" type="date" value="${today()}"><select class="field" id="wellMood"><option>Feeling good</option><option>Okay</option><option>Low energy</option><option>Stressed</option><option>Need a reset</option></select><input class="field" id="wellNote" placeholder="A thought for today (optional)"><button class="btn primary">Save check-in</button></form>`,'span-5')}${card('Wellness journal',data.wellness.slice().reverse().map(x=>`<div class="item"><div class="grow"><b>${esc(x.mood)}</b><div class="small">${esc(x.date)} · ${esc(x.note||'')}</div></div><button class="iconbtn" onclick="removeItem('wellness','${x.id}')">×</button></div>`).join('')||empty('Your check-ins will appear here.'),'span-7')}<section class="card span-12"><div class="card-title">A small reminder</div><p class="big-note">Rest is part of making progress. You deserve care on ordinary days, too.</p></section></div>`}function addWellness(e){e.preventDefault();data.wellness.push({id:id(),date:wellDate.value,mood:wellMood.value,note:wellNote.value});save();renderWellness()} 
+
+function renderSchool(){document.getElementById('page-school').innerHTML=`<div class="grid">${card('Add an assignment or work task',`<form class="formrow" onsubmit="addSimple(event,'school',['schoolName','schoolDue','schoolType'])"><inpu t class="field" id="schoolName" placeholder="Assignment, project, or task" required><input class="field" id="schoolDue" type="date"><select class="field" id="schoolType"><option>School</option><option>Work</option><option>Study</option><option>Project</option></select><button class="btn primary">Add</button></form>`,'span-5')}${card('Your planner',simpleList('school'),'span-7')}</div>`} 
+
+function simpleList(k){return `<div class="list">${data[k].map(x=>`<div class="item ${x.done?'done':''}"><input type="checkbox" ${x.done?'checked':''} onchange="toggleSimple('${k}','${x.id}')"><div class="grow"><div class="item-text"><b>${esc(x.name)}</b></div><div class="small">${esc(x.type||x.when||x.date||x.due||'')}</div></div><button class="iconbtn" onclick="removeItem('${k}','${x.id}')">×</button></div>`).join('')||empty('Nothing here yet. Add your first item above.')}</div>`}function addSimple(e,k,ids){e.preventDefault();let vals=ids.map(x=>document.getElementById(x).value);let x={id:id(),name:vals[0],done:false};if(k==='meals'){x.type=vals[1];x.date=vals[2]}if(k==='chores')x.when=vals[1];if(k==='goals')x.due=vals[1];if(k==='school'){x.due=vals[1];x.type=vals[2]}data[k].push(x);save();render()};function toggleSimple(k,i){let x=data[k].find(x=>x.id===i);x.done=!x.done;save();render()} 
+
+function renderSettings(){let s=data.settings;document.getElementById('page-settings').innerHTML=`<div class="grid">${card('Appearance',`<div class="item"><div class="grow"><b>Color theme</b><div class="small">Choose the atmosphere for your workspace.</div></div><select class="field" style="max-width:150px" onchange="data.settings.theme=this.value;save();applyTheme()"><option value="light" ${s.theme==='light'?'selected':''}>Warm light</option><option value="dark" ${s.theme==='dark'?'selected':''}>Evening dark</option></select></div><div class="item"><div class="grow"><b>Accent color</b><div class="small">A subtle detail throughout LifeHub.</div></div><input type="color" value="${s.accent||'#b59662'}" onchange="data.settings.accent=this.value;save();applyTheme()"></div><div class="item"><div class="grow"><b>Heading style</b><div class="small">Classic serif or clean modern.</div></div><select class="field" style="max-width:150px" onchange="data.settings.font=this.value;save();applyTheme()"><option value="classic">Elegant</option><option value="modern">Modern</option></select></div>`,'span-6')}${card('Dashboard cards',`<p class="small">Choose which quick stats you want on your overview.</p>${['tasks','events','money','habits'].map(k=>`<label class="item"><input type="checkbox" ${s.cards.includes(k)?'checked':''} onchange="toggleCard('${k}')"><span>${k[0].toUpperCase()+k.slice(1)}</span></label>`).join('')}`,'span-6')}${card('Create your own section',`<form class="formrow" onsubmit="addCustom(event)"><input class="field" id="customName" placeholder="Your section name" required><button class="btn primary">Create section</button></form><div class="list">${data.customSections.map(x=>`<div class="item"><b>${esc(x.name)}</b><button class="iconbtn" onclick="removeItem('customSections','${x.id}')">×</button></div>`).join('')||empty('Your custom sections will appear here.')}</div>`,'span-6')}${card('Your data & privacy',`<p class="small" style="line-height:1.8">LifeHub saves information in this browser using local storage. It is not currently synced to an account or cloud, and it does not connect to your bank. Clearing browser data may erase your information. For important records, keep your own backup.</p><button class="btn" onclick="exportData()">Export my LifeHub data</button> <button class="btn" onclick="importData()">Import backup</button><input type="file" id="importFile" accept="application/json" class="hidden" onchange="readImport(event)">`,'span-6')}</div>`} 
+
+function applyTheme(){document.body.classList.toggle('theme-dark',data.settings.theme==='dark');document.documentElement.style.setProperty('--gold',data.settings.accent||'#b59662');document.documentElement.style.setProperty('--serif',data.settings.font==='modern'?'DM Sans,Arial,sans-serif':"'Playfair Display',Georgia,serif")}function toggleCard(k){let a=data.settings.cards;a.includes(k)?data.settings.cards=a.filter(x=>x!==k):a.push(k);save();renderSettings()}function addCustom(e){e.preventDefault();data.customSections.push({id:id(),name:customName.value});save();renderSettings();toast('Custom section created')} 
+
+function removeItem(k,i){data[k]=data[k].filter(x=>x.id!==i);save();render();toast('Removed')}function exportData(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='lifehub-backup.json';a.click();URL.revokeObjectURL(a.href)}function importData(){document.getElementById('importFile').click()}function readImport(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let v=JSON.parse(r.result);Object.keys(defaults).forEach(k=>{if(k in v)data[k]=v[k]});save();render();toast('Backup imported')}catch{toast('That backup could not be read')}};r.readAsText(f)} 
+
+document.getElementById('globalSearch').addEventListener('input',e=>{let q=e.target.value.trim().toLowerCase();if(!q)return;let matches=[];for(let [k,label] of [['tasks','To-do'],['events','Schedule'],['expenses','Expenses'],['shoppingLists','Shopping'],['habits','Habits'],['notesList','Notes'],['meals','Meals'],['chores','Home'],['goals','Goals'],['wellness','Wellness'],['school','School & Work']]){let arr=data[k]||[];arr.forEach(x=>{let s=JSON.stringify(x).toLowerCase();if(s.includes(q))matches.push(label+': '+(x.text||x.name||x.title||x.mood||'Item'))})}if(e.key==='Enter')alert(matches.slice(0,15).join('\n')||'No matches found.')}); 
+
+load();nav();shell();applyTheme();render();showPage('overview');document.getElementById('dateLine').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}).toUpperCase(); 
+
+</script></body></html> 
