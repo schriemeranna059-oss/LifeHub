@@ -220,9 +220,9 @@ function addTask() {
   });
 
   item.appendChild(checkbox);
-  tasks.push(input.value.trim());
-localStorage.setItem("lifehub_tasks", JSON.stringify(tasks));  list.appendChild(item);
+tasks.push(input.value.trim());
 localStorage.setItem("lifehub_tasks", JSON.stringify(tasks));
+list.appendChild(item);
   input.value = "";
 }
 </script>
