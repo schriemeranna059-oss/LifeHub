@@ -184,7 +184,22 @@
   showPage("dashboard");
 </script> </main>
 </div>
-<script>
+tasks.forEach(task => {
+  const item = document.createElement("div");
+  item.textContent = task;
+
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.style.marginLeft = "10px";
+
+  checkbox.addEventListener("change", function() {
+    item.style.textDecoration = checkbox.checked ? "line-through" : "none";
+  });
+
+  item.appendChild(checkbox);
+  document.getElementById("taskList").appendChild(item);
+});
+  <script>
 let tasks = JSON.parse(localStorage.getItem("lifehub_tasks")) || [];
 
 function addTask() {
